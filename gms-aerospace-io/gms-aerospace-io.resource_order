@@ -16,7 +16,6 @@
     {"name":"Extensions","order":14,"path":"folders/Extensions.yy",},
     {"name":"Particle Systems","order":15,"path":"folders/Particle Systems.yy",},
     {"name":"Skins","order":1,"path":"folders/Sprites/Skins.yy",},
-    {"name":"Rocket Networking","order":6,"path":"folders/Objects/Rocket Networking.yy",},
   ],
   "ResourceOrderSettings": [
     {"name":"Room_Name","order":1,"path":"rooms/Room_Name/Room_Name.yy",},

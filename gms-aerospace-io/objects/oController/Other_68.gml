@@ -12,12 +12,12 @@ if(type == network_type_non_blocking_connect){
 			var Buffer = buffer_create(1, buffer_grow, 1)
 			//WHAT DATA 
 			var data = ds_map_create();
-			data[? "serverId"] = global.SERVERID;
 			//whatever data you want to send as key value pairs
 
-			ds_map_add(data,"eventName","join_server");
+			ds_map_add(data,"eventName","create_me");
+			ds_map_add(data, "username", global.username)
 			buffer_write(Buffer, buffer_text, json_encode(data))
-			network_send_raw(oBrain.socket, Buffer, buffer_tell(Buffer),network_send_text)
+			network_send_raw(oController.socket, Buffer, buffer_tell(Buffer),network_send_text)
 			buffer_delete(Buffer)
 			ds_map_destroy(data)
 			
@@ -30,6 +30,7 @@ if(type == network_type_non_blocking_connect){
 if(type == network_type_data){
 	var buffer_raw = async_load[? "buffer"];
 	var buffer_processed = buffer_read(buffer_raw , buffer_text);
+	show_message(buffer_processed)
 	//var realData = json_decode(buffer_processed);
 	var realData = json_parse(buffer_processed)
 	if(variable_struct_exists(realData , "eventName")){
@@ -45,7 +46,7 @@ if(type == network_type_data){
 			global.clientId = realData.clientId
 			global.roomId = string(global.clientId)
 			alarm[2] = 1;
-			callback_ConnectToServer();
+			
 		break;
 		
 		
