@@ -35,14 +35,20 @@ image_yscale = image_xscale
 
 //SHOOT
 if(mouse_check_button_pressed(mb_left)){
-	repeat(3){
-		var b = instance_create_layer(x,y,"Instances",oBullet);
-		b.speed = 10  + random_range(-3,3)
-		b.direction = other.direction + random_range(-5,5)
-		b.image_angle = other.image_angle
-		b.image_blend = make_color_hsv(irandom(255) , irandom(80),255)
-		
-	}
+	//create bullet
+	var Buffer = buffer_create(1, buffer_grow, 1)
+	//WHAT DATA 
+	var data = ds_map_create();
+	//whatever data you want to send as key value pairs
+
+	ds_map_add(data,"eventName","create_bullet");
+	ds_map_add(data, "clientId", global.clientId)
+
+	
+	buffer_write(Buffer, buffer_text, json_encode(data))
+	network_send_raw(oController.socket, Buffer, buffer_tell(Buffer),network_send_text)
+	buffer_delete(Buffer)
+	ds_map_destroy(data)
 	
 }
 

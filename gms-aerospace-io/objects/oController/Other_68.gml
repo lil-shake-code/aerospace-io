@@ -94,6 +94,32 @@ if(type == network_type_data){
 		break;
 		
 		
+		
+		case "bullet_state_update":
+		
+		
+		var found = false;
+		with(oBullet){
+			if(bulletId == realData.bulletId){
+				found = true
+				//update the x, y
+				x = lerp(x,realData.x, 0.5);
+				y = lerp(y,realData.y, 0.5);
+			
+			}
+		}
+		if(!found){
+			var b = instance_create_layer(realData.x,realData.y,"Instances",oBullet);
+		
+			b.bulletId = realData.bulletId
+			b.direction = realData.A
+			b.image_angle = b.direction
+			b.image_blend = make_color_hsv(irandom(255) , irandom(80),255)
+		
+		}
+		break;
+		
+		
 	
 		
 		case "destroy_player":

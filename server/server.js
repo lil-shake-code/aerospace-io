@@ -3,7 +3,9 @@ import { createServer } from "http";
 import { WebSocketServer } from "ws";
 
 var players = {};
+var bullets = {};
 var clientId = 0;
+var bulletId = 0;
 // Create an HTTP server
 const server = createServer((req, res) => {
   res.writeHead(404, { "Content-Type": "text/plain" });
@@ -19,12 +21,19 @@ const wss = new WebSocketServer({
 
 //Game Loop
 function gameLoop() {
-  //update
+  //update players
   for (var i in players) {
     var player = players[i];
     //angle is in degrees
     player.x += player.N * Math.cos((player.A * Math.PI) / 180) * player.speed;
     player.y -= player.N * Math.sin((player.A * Math.PI) / 180) * player.speed;
+  }
+
+  //update bullets
+  for (var i in bullets) {
+    var bullet = bullets[i];
+    bullet.x += Math.cos((bullet.A * Math.PI) / 180) * bullet.speed;
+    bullet.y -= Math.sin((bullet.A * Math.PI) / 180) * bullet.speed;
   }
 }
 setInterval(gameLoop, 1000 / 60);
@@ -40,7 +49,7 @@ function globalStateUpdate() {
       y: player.y,
       A: player.A,
     };
-    console.log(sendThis);
+
     for (var j in players) {
       var otherPlayer = players[j];
 
@@ -49,6 +58,27 @@ function globalStateUpdate() {
   }
 }
 setInterval(globalStateUpdate, 1000 / 60);
+
+//Bullet state update
+function bulletStateUpdate() {
+  for (var i in bullets) {
+    var bullet = bullets[i];
+    var sendThis = {
+      eventName: "bullet_state_update",
+      bulletId: i,
+      x: bullet.x,
+      y: bullet.y,
+      A: bullet.A,
+    };
+
+    for (var j in players) {
+      var player = players[j];
+
+      player.ws.send(JSON.stringify(sendThis));
+    }
+  }
+}
+setInterval(bulletStateUpdate, 1000 / 60);
 
 // Set up an event listener for handling incoming WebSocket connections
 wss.on("connection", (ws) => {
@@ -112,6 +142,20 @@ wss.on("connection", (ws) => {
         if (player) {
           player.A = realData.A;
           player.N = realData.N;
+        }
+        break;
+
+      case "create_bullet":
+        var player = players[realData.clientId];
+        if (player) {
+          var bullet = {
+            x: player.x,
+            y: player.y,
+            A: player.A,
+            speed: 15,
+            firedBy: player.clientId,
+          };
+          bullets[bulletId++] = bullet;
         }
         break;
     }
