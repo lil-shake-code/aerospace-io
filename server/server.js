@@ -6,6 +6,22 @@ var players = {};
 var bullets = {};
 var clientId = 0;
 var bulletId = 0;
+var MAX_BOTS = 10;
+
+const GAME_WIDTH = 3000;
+const GAME_HEIGHT = 3000;
+
+const spawnPoints = [
+  { x: 1458, y: 400 }, //ursa major
+  { x: 1400, y: 700 }, //ursa minor
+  { x: 870, y: 1000 }, //cassiopeia
+  { x: 400, y: 1350 }, //aries
+  { x: 964, y: 2421 }, //orion
+  { x: 1542, y: 1542 }, //the summer triangle
+  { x: 2012, y: 2012 }, //sirius
+  { x: 2513, y: 866 }, //corona borealis
+];
+
 // Create an HTTP server
 const server = createServer((req, res) => {
   res.writeHead(404, { "Content-Type": "text/plain" });
@@ -18,6 +34,37 @@ const wss = new WebSocketServer({
     //PROCESS ENV PORT
     process.env.PORT || 3000,
 });
+
+function distance(x1, y1, x2, y2) {
+  return Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2);
+}
+
+function bestSpawnPoint(players, spawnPoints) {
+  let bestPoint = null;
+  let bestDistance = -Infinity; // Initialize to a very small value
+
+  for (let i = 0; i < spawnPoints.length; i++) {
+    let currentPoint = spawnPoints[i];
+    let minDist = Infinity; // Initialize to a very large value
+
+    for (let clientId in players) {
+      let player = players[clientId];
+      let d = distance(currentPoint.x, currentPoint.y, player.x, player.y);
+      if (d < minDist) {
+        minDist = d;
+      }
+    }
+
+    if (minDist > bestDistance) {
+      bestDistance = minDist;
+      bestPoint = currentPoint;
+    }
+  }
+
+  return bestPoint;
+}
+
+console.log(bestSpawnPoint(players, spawnPoints));
 
 //Game Loop
 function gameLoop() {
@@ -92,10 +139,11 @@ wss.on("connection", (ws) => {
 
     switch (realData.eventName) {
       case "create_me":
+        var spawnPoint = bestSpawnPoint(players, spawnPoints);
         var player = {
           clientId: clientId++,
-          x: 100,
-          y: 100,
+          x: spawnPoint.x,
+          y: spawnPoint.y,
           A: 0,
           N: 0,
           speed: 15,
