@@ -7,3 +7,7 @@ xTo = xstart;
 yTo = ystart;
 xOld = xTo;
 xOld = xTo;
+
+alarm[0]=1
+oldh= browser_height
+oldw = browser_width

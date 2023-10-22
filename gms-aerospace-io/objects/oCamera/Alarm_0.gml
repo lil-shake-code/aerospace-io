@@ -2,14 +2,9 @@
 // You can write your code in this editor
 browserw = browser_width
 browserh = browser_height
-/*
-if(browserw/browserh<(16/9))
-{
-	window_set_size(browserw, browserw*9/16);
-}
-else window_set_size(browserh*16/9, browserh);
-*/
-if(room ==Room_World)and(!mouse_check_button_pressed(mb_right))
+
+
+if(room ==Room_World)
 {
 	if(oldw!= browserw or oldh!=browserh){
 		if(instance_exists(oPlayer))
@@ -29,8 +24,3 @@ else
 {
 	window_set_size(browserw, browserh);
 }
-
-
-
-
-alarm[0]=5;

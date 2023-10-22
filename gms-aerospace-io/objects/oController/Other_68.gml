@@ -30,7 +30,7 @@ if(type == network_type_non_blocking_connect){
 if(type == network_type_data){
 	var buffer_raw = async_load[? "buffer"];
 	var buffer_processed = buffer_read(buffer_raw , buffer_text);
-	show_message(buffer_processed)
+	//show_message(buffer_processed)
 	//var realData = json_decode(buffer_processed);
 	var realData = json_parse(buffer_processed)
 	if(variable_struct_exists(realData , "eventName")){
@@ -44,39 +44,53 @@ if(type == network_type_data){
 	switch(eventName){
 		case "created_you":
 			global.clientId = realData.clientId
-			global.roomId = string(global.clientId)
-			alarm[2] = 1;
+			global.roomId = realData.roomId
+			
+			oPlayer.x = realData.x;
+			oPlayer.y = realData.y;
+			oPlayer.serverX = oPlayer.x
+			oPlayer.serverY = oPlayer.y
+			
 			
 		break;
 		
 		
 		
-		case "state_update":
-		//show_message(buffer_processed)
-		var found = false;
+		
+		
+		case "create_player":
+		var enemy = instance_create_layer(realData.x,realData.y,"Instances",oOtherPlayer)
+		enemy.clientId = real(realData.clientId)
+
+	
+		break;
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		case "global_state_update":
+	
+		if(global.clientId==realData.clientId){
+			oPlayer.serverX = real(realData.x)
+			oPlayer.serverY = real(realData.y)
+		}
 		with(oOtherPlayer){
 			if(clientId==real(realData.clientId)){
-				sharedProperties = realData.SP;
-				found = true;
-				show_debug_message("found this player")
-				//Now also update the entities for this player
-				entities =(realData.entities);
+				serverX = real(realData.x)
+				serverY = real(realData.y)
+				image_angle = realData.A
 				
-				
-				
-				
-				
-				
+	
 			}
 		}
-		if(!found and real(realData.clientId!=global.clientId)){
-			show_debug_message("creating a new player")
-			var new_enemy = instance_create_layer(0,0,global.OtherPlayersLayerName,oOtherPlayer);
-			new_enemy.clientId = real(realData.clientId);
-			new_enemy.roomId = realData.roomId;
-			new_enemy.sharedProperties = realData.SP;
-		
-		}
+	
 		break;
 		
 		
@@ -87,7 +101,7 @@ if(type == network_type_data){
 		with(oOtherPlayer){
 			if(clientId==real(realData.clientId)){
 				instance_destroy(id);
-				show_message("found player to destroy")
+				
 			}
 		}
 		
