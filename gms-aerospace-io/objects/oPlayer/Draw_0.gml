@@ -26,4 +26,4 @@ draw_healthbar(xleft, ytop, xright, ybottom, health, c_black, c_red, c_lime, 0, 
 //dont
 
 draw_set_color(c_white)
-	draw_circle(x,y,outer_radius, true)
+draw_circle(x,y,outer_radius, true)

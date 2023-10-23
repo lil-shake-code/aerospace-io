@@ -9,7 +9,7 @@ sprite_index = global.skins[global.skin];
 
 // Define annular region boundaries
  inner_radius = 18;
- outer_radius = 200;
+ outer_radius = 100;
  
  normalized_value = 0
  

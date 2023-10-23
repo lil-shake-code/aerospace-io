@@ -24,3 +24,5 @@ else
 {
 	window_set_size(browserw, browserh);
 }
+
+alarm[0] = 10

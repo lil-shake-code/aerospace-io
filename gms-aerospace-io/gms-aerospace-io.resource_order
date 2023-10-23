@@ -38,6 +38,7 @@
     {"name":"sSky","order":7,"path":"sprites/sSky/sSky.yy",},
     {"name":"skin_greenie","order":4,"path":"sprites/skin_greenie/skin_greenie.yy",},
     {"name":"oCamera","order":2,"path":"objects/oCamera/oCamera.yy",},
+    {"name":"shWhite","order":1,"path":"shaders/shWhite/shWhite.yy",},
     {"name":"oClosestArrow","order":3,"path":"objects/oClosestArrow/oClosestArrow.yy",},
     {"name":"sClosestArrow","order":3,"path":"sprites/sClosestArrow/sClosestArrow.yy",},
     {"name":"skin_ifyouwanttolooklikeafool","order":5,"path":"sprites/skin_ifyouwanttolooklikeafool/skin_ifyouwanttolooklikeafool.yy",},

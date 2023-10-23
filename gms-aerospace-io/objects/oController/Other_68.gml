@@ -59,8 +59,10 @@ if(type == network_type_data){
 		
 		
 		case "create_player":
+		
 		var enemy = instance_create_layer(realData.x,realData.y,"Instances",oOtherPlayer)
 		enemy.clientId = real(realData.clientId)
+		enemy.enemyUsername = realData.username
 
 	
 		break;
@@ -80,12 +82,16 @@ if(type == network_type_data){
 		if(global.clientId==realData.clientId){
 			oPlayer.serverX = real(realData.x)
 			oPlayer.serverY = real(realData.y)
+			health = real(realData.H) 
+			score = real(realData.K) 
 		}
 		with(oOtherPlayer){
 			if(clientId==real(realData.clientId)){
 				serverX = real(realData.x)
 				serverY = real(realData.y)
 				image_angle = realData.A
+				enemyHealth = real(realData.H) 
+				enemyKills = real(realData.K)  
 				
 	
 			}
