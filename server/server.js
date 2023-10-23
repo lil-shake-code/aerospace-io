@@ -165,6 +165,15 @@ function gameLoop() {
               clientId: player.clientId,
             };
 
+            for (var k in players) {
+              var otherPlayer = players[k];
+
+              otherPlayer.ws.send(JSON.stringify(sendThis));
+            }
+
+            //remove player from players
+            delete players[player.clientId];
+
             //find the player who fired the bullet and add 1 to kills
             players[bullet.firedBy].kills += 1;
           }
