@@ -161,12 +161,13 @@ function gameLoop() {
           //IF PLAYER DIES
           if (player.health <= 0) {
             var sendThis = {
-              eventName: "player_died",
+              eventName: "destroy_player",
               clientId: player.clientId,
             };
+
+            //find the player who fired the bullet and add 1 to kills
+            players[bullet.firedBy].kills += 1;
           }
-          //find the player who fired the bullet and add 1 to kills
-          players[bullet.firedBy].kills += 1;
 
           break;
         }
@@ -239,7 +240,7 @@ wss.on("connection", (ws) => {
           y: spawnPoint.y,
           A: 0,
           N: 0,
-          speed: 15,
+          speed: 10,
           health: 100,
           kills: 0,
           roomId: "public",
@@ -275,6 +276,25 @@ wss.on("connection", (ws) => {
 
           if (otherPlayer.clientId != player.clientId) {
             otherPlayer.ws.send(JSON.stringify(sendThis));
+          }
+        }
+
+        //now tell this guy about all the other players
+
+        for (var i in players) {
+          var otherPlayer = players[i];
+
+          if (otherPlayer.clientId != player.clientId) {
+            ws.send(
+              JSON.stringify({
+                eventName: "create_player",
+                clientId: otherPlayer.clientId,
+                roomId: otherPlayer.roomId,
+                x: otherPlayer.x,
+                y: otherPlayer.y,
+                username: otherPlayer.username,
+              })
+            );
           }
         }
 

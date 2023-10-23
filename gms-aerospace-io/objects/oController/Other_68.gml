@@ -130,10 +130,15 @@ if(type == network_type_data){
 		
 		case "destroy_player":
 		//show_message(buffer_processed)
-		with(oOtherPlayer){
-			if(clientId==real(realData.clientId)){
-				instance_destroy(id);
+		if(global.clientId == realData.clientId){
+			instance_destroy(oPlayer)
+			
+		}else{
+			with(oOtherPlayer){
+				if(clientId==real(realData.clientId)){
+					instance_destroy(id);
 				
+				}
 			}
 		}
 		

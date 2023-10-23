@@ -12,16 +12,16 @@ var scaled_distance = distance_to_point(mouse_x, mouse_y) * image_xscale;
 if (scaled_distance > inner_radius && scaled_distance < outer_radius)
 {
     // Map the distance to a value between 0 and 1
-     normalized_value = (scaled_distance - inner_radius) / (outer_radius - inner_radius);
+    normalized_value = (scaled_distance - inner_radius) / (outer_radius - inner_radius);
     
-    // Connect this value to the speed
-   // speed = 1 * log2(normalized_value * (outer_radius - inner_radius) + inner_radius);
+    // Adjust the value to peak at 0.5 and then drop
+    normalized_value = 4 * normalized_value * (1 - normalized_value);
 }
 else
 {
-	normalized_value = 0
-    //speed *= 0.7;
+    normalized_value = lerp(normalized_value,0,0.5)
 }
+
 
 x = lerp(x, serverX, 0.5)
 y = lerp(y, serverY, 0.5)

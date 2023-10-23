@@ -1,5 +1,5 @@
 
-if(instance_exists(oPlayer)){
+if(instance_exists(oPlayer) ){
 	var Buffer = buffer_create(1, buffer_grow, 1)
 	//WHAT DATA 
 	var data = ds_map_create();

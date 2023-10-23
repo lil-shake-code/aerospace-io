@@ -27,3 +27,5 @@ var ybottom = oOtherPlayer.y - 22 + 2;
 
 // Drawing the health bar using the calculated coordinates
 draw_healthbar(xleft, ytop, xright, ybottom, enemyHealth, c_black, c_red, c_lime, 0, true, true);
+
+draw_self()
