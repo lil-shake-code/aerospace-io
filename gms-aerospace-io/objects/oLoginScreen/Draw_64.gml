@@ -19,6 +19,12 @@ draw_text_transformed(bw/2, bh*.8, "PLAY ",sc,sc,0);
 if(mouse_check_button_pressed(mb_left)){
 	if(point_in_rectangle(mx,my,bw*0.45, bh*0.75, bw*0.55, bh*0.85)){
 		room_goto(Room_World)
+		
+		
+		view_wport[0] = 1080*sc;
+		view_hport[0] = view_wport[0]*bh/bw;
+		camera_set_view_size(view_camera[0], view_wport[0], view_hport[0]);
+		window_set_size(bw, bh);
 	}
 
 }
