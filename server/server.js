@@ -103,6 +103,66 @@ function gameLoop() {
   //update players
   for (var i in players) {
     var player = players[i];
+
+    if (player.bot) {
+      //recoil
+      if (player.bot.recoil > 0) {
+        player.bot.recoil--;
+      }
+      //bot logic
+      //try to chase the player closest to this bot and once you are close enough, shoot
+
+      var closestPlayer = null;
+      var closestDistance = Infinity;
+
+      for (var j in players) {
+        var otherPlayer = players[j];
+        if (otherPlayer.clientId != player.clientId) {
+          var d = distance(player.x, player.y, otherPlayer.x, otherPlayer.y);
+          if (d < closestDistance) {
+            closestDistance = d;
+            closestPlayer = otherPlayer;
+          }
+        }
+      }
+
+      if (closestPlayer) {
+        //chase this player
+        var dx = closestPlayer.x - player.x;
+        var dy = closestPlayer.y - player.y;
+
+        //if the player is close enough, shoot
+        if (closestDistance < 100) {
+          if (player.bot.recoil <= 0) {
+            //rotate the bot to face the player
+            player.A = Math.atan2(-dy, dx) * (180 / Math.PI);
+            var bullet = {
+              x: player.x,
+              y: player.y,
+              A: player.A,
+              speed: 15,
+              firedBy: player.clientId,
+            };
+            bullets[bulletId++] = bullet;
+
+            //recoil
+            player.bot.recoil = Math.floor(Math.random() * 30) + 10;
+          }
+        } else {
+          //just make the bot move in the direction of the player 5 pixels
+          player.x += (dx / closestDistance) * player.speed * 0.2;
+          player.y += (dy / closestDistance) * player.speed * 0.2;
+
+          //rotate the bot to face the player
+          player.A = Math.atan2(-dy, dx) * (180 / Math.PI);
+        }
+        //check if player is out of bounds
+        var correctedPosition = outOfBounds(player.x, player.y);
+        player.x = correctedPosition.x;
+        player.y = correctedPosition.y;
+        continue;
+      }
+    }
     //angle is in degrees
     player.x += player.N * Math.cos((player.A * Math.PI) / 180) * player.speed;
     player.y -= player.N * Math.sin((player.A * Math.PI) / 180) * player.speed;
@@ -131,8 +191,9 @@ function gameLoop() {
 
       for (var j in players) {
         var player = players[j];
-
-        player.ws.send(JSON.stringify(sendThis));
+        if (player.ws) {
+          player.ws.send(JSON.stringify(sendThis));
+        }
       }
       continue;
     }
@@ -153,7 +214,9 @@ function gameLoop() {
           for (var k in players) {
             var otherPlayer = players[k];
 
-            otherPlayer.ws.send(JSON.stringify(sendThis));
+            if (otherPlayer.ws) {
+              otherPlayer.ws.send(JSON.stringify(sendThis));
+            }
           }
 
           //reduce player health
@@ -168,14 +231,21 @@ function gameLoop() {
             for (var k in players) {
               var otherPlayer = players[k];
 
-              otherPlayer.ws.send(JSON.stringify(sendThis));
+              if (otherPlayer.ws) {
+                otherPlayer.ws.send(JSON.stringify(sendThis));
+              }
             }
 
             //remove player from players
             delete players[player.clientId];
 
             //find the player who fired the bullet and add 1 to kills
-            players[bullet.firedBy].kills += 1;
+            try {
+              players[bullet.firedBy].kills += 1;
+            } catch (e) {
+              console.log(e);
+              console.log("bullet fired by: " + bullet.firedBy);
+            }
           }
 
           break;
@@ -185,6 +255,62 @@ function gameLoop() {
   }
 }
 setInterval(gameLoop, 1000 / 60);
+
+function createBots() {
+  //go through the players and count how many are bots
+  var botCount = 0;
+  for (var i in players) {
+    var player = players[i];
+    if (player.bot) {
+      botCount++;
+    }
+  }
+
+  //if there are less than MAX_BOTS, create a new bot
+  if (botCount < MAX_BOTS) {
+    var spawnPoint = bestSpawnPoint(players, spawnPoints);
+    var player = {
+      clientId: clientId++,
+      x: spawnPoint.x,
+      y: spawnPoint.y,
+      A: 0,
+      N: 0,
+      speed: 10,
+      health: 100,
+      kills: 0,
+      roomId: "public",
+      username: "bot",
+      ws: null,
+      bot: {
+        recoil: 0,
+      },
+    };
+
+    players[player.clientId] = player;
+
+    //tell other players we created this guy
+    var sendThis = {
+      eventName: "create_player",
+      clientId: player.clientId,
+      roomId: player.roomId,
+      x: player.x,
+      y: player.y,
+      username: player.username,
+    };
+
+    for (var j in players) {
+      var otherPlayer = players[j];
+
+      if (otherPlayer.clientId != player.clientId) {
+        //if ws is not null
+        if (otherPlayer.ws) {
+          otherPlayer.ws.send(JSON.stringify(sendThis));
+        }
+      }
+    }
+  }
+}
+setInterval(createBots, 1000);
 
 //Global state update
 function globalStateUpdate() {
@@ -202,8 +328,9 @@ function globalStateUpdate() {
 
     for (var j in players) {
       var otherPlayer = players[j];
-
-      otherPlayer.ws.send(JSON.stringify(sendThis));
+      if (otherPlayer.ws) {
+        otherPlayer.ws.send(JSON.stringify(sendThis));
+      }
     }
   }
 }
@@ -223,8 +350,9 @@ function bulletStateUpdate() {
 
     for (var j in players) {
       var player = players[j];
-
-      player.ws.send(JSON.stringify(sendThis));
+      if (player.ws) {
+        player.ws.send(JSON.stringify(sendThis));
+      }
     }
   }
 }
@@ -236,7 +364,7 @@ wss.on("connection", (ws) => {
 
   // Set up event listeners for handling messages from clients
   ws.on("message", (message) => {
-    console.log(`Received message: ${message}`);
+    // console.log(`Received message: ${message}`);
 
     var realData = JSON.parse(message);
 
@@ -255,6 +383,7 @@ wss.on("connection", (ws) => {
           roomId: "public",
           username: realData.username,
           ws: ws,
+          bot: null,
         };
 
         players[player.clientId] = player;
@@ -284,7 +413,9 @@ wss.on("connection", (ws) => {
           var otherPlayer = players[i];
 
           if (otherPlayer.clientId != player.clientId) {
-            otherPlayer.ws.send(JSON.stringify(sendThis));
+            if (otherPlayer.ws) {
+              otherPlayer.ws.send(JSON.stringify(sendThis));
+            }
           }
         }
 
@@ -332,9 +463,6 @@ wss.on("connection", (ws) => {
         break;
     }
   });
-
-  // Send a welcome message to the client
-  //   ws.send("Welcome to the WebSocket server!");
 });
 
 // Start the HTTP server on port 8080 (or any other port you prefer)
