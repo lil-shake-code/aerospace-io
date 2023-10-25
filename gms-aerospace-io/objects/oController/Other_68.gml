@@ -66,6 +66,8 @@ if(type == network_type_data){
 		var enemy = instance_create_layer(realData.x,realData.y,"Instances",oOtherPlayer)
 		enemy.clientId = real(realData.clientId)
 		enemy.enemyUsername = realData.username
+		enemy.serverX = realData.x
+		enemy.serverY = realData.y
 
 	
 		break;
@@ -92,6 +94,13 @@ if(type == network_type_data){
 			if(clientId==real(realData.clientId)){
 				serverX = real(realData.x)
 				serverY = real(realData.y)
+				
+				if(point_distance(realData.x, realData.y, serverX, serverY) > 60){
+					show_message("Huge change in pos");
+					show_message("x is"+string(realData.x)+ " y is "+string(realData.y))
+					show_message(buffer_processed)
+					
+				}
 				image_angle = realData.A
 				enemyHealth = real(realData.H) 
 				enemyKills = real(realData.K)  

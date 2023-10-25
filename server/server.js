@@ -6,7 +6,7 @@ var players = {};
 var bullets = {};
 var clientId = 0;
 var bulletId = 0;
-var MAX_BOTS = 1;
+var MAX_BOTS = 5;
 
 const GAME_WIDTH = 3000;
 const GAME_HEIGHT = 3000;
@@ -107,6 +107,7 @@ function gameLoop() {
     var player = players[i];
 
     if (player.bot) {
+      player.bot.lifetime++;
       //recoil
       if (player.bot.recoil > 0) {
         player.bot.recoil--;
@@ -299,6 +300,7 @@ function createBots() {
       ws: null,
       bot: {
         recoil: 0,
+        lifetime: 0,
       },
     };
 
