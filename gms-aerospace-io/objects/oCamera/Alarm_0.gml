@@ -7,7 +7,7 @@ browserh = browser_height
 if(room ==Room_World)
 {
 	show_debug_message("resize happening nwo")
-	if(oldw!= browserw or oldh!=browserh){
+	if(true){//oldw!= browserw or oldh!=browserh
 		if(instance_exists(oPlayer))
 		{
 			var scale =1+(oPlayer.image_xscale-1)/2;

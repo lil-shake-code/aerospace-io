@@ -302,6 +302,7 @@ function createBots() {
         recoil: 0,
         lifetime: 0,
       },
+      skin: Math.floor(Math.random() * 7), //0-6
     };
 
     players[player.clientId] = player;
@@ -314,6 +315,7 @@ function createBots() {
       x: player.x,
       y: player.y,
       username: player.username,
+      skin: player.skin,
     };
 
     for (var j in players) {
@@ -417,6 +419,7 @@ wss.on("connection", (ws) => {
           username: realData.username,
           ws: ws,
           bot: null,
+          skin: realData.skin,
         };
 
         players[player.clientId] = player;
@@ -440,6 +443,7 @@ wss.on("connection", (ws) => {
           x: player.x,
           y: player.y,
           username: player.username,
+          skin: player.skin,
         };
 
         for (var i in players) {
@@ -476,6 +480,7 @@ wss.on("connection", (ws) => {
                 x: otherPlayer.x,
                 y: otherPlayer.y,
                 username: otherPlayer.username,
+                skin: otherPlayer.skin,
               })
             );
           }

@@ -31,7 +31,7 @@ y = lerp(y, serverY, 0.5)
 image_xscale =1+0.1*score
 
 image_yscale = image_xscale
-
+outer_radius = min(browser_height, browser_width)/5
 
 //SHOOT
 if(mouse_check_button_pressed(mb_left)){
