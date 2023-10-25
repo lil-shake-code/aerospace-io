@@ -14,7 +14,7 @@ if(!instance_exists(oPlayer) and room = Room_World){
 	
 	draw_text_transformed(bw*0.5, bh*0.48, "Kills : "+string(score), 0.7*sc, 0.7*sc, 0);
 	
-	draw_text_transformed(bw*0.5, bh*0.58, "Player "+myKiller+" took you down!"+string(score), 0.2*sc, 0.2*sc, 0);
+	draw_text_transformed(bw*0.5, bh*0.58, "Player "+myKiller+" took you down!", 0.2*sc, 0.2*sc, 0);
 	
 	draw_set_color(c_red);
 	draw_text_transformed(bw*0.5, bh*0.65, "Click to Respawn!", 0.4*sc, 0.4*sc, 0);
@@ -37,17 +37,17 @@ if( room = Room_World){
 	draw_set_color(c_white);
 	draw_set_font(fMenu80);
 	draw_set_halign(fa_left);
-	draw_text_transformed(0,bh*0.1," Score : "+string(score),0.5*sc,0.5*sc,0);
+	draw_text_transformed(0,bh*0.15," Score : "+string(score),0.3*sc,0.3*sc,0);
 	
 	
 	
 	draw_set_color(c_yellow);
 	draw_set_font(ftArial);
 	
-	draw_text_transformed(0,bh*0.02," FPS : "+string(fps),0.1*sc,0.1*sc,0);
-	draw_text_transformed(0,bh*0.05," CONNECTED to  : server",0.1*sc,0.1*sc,0);
-	draw_text_transformed(0,bh*0.08," PING : ",0.1*sc,0.1*sc,0);
-	draw_text_transformed(0,bh*0.11," Players in this World : "+string(instance_exists(oPlayer) + instance_number(oOtherPlayer)),0.1*sc,0.1*sc,0);
+	draw_text_transformed(0,bh*0.02," FPS : "+string(fps),0.3*sc,0.3*sc,0);
+	draw_text_transformed(0,bh*0.05," CONNECTED to  : "+global.roomId,0.3*sc,0.3*sc,0);
+	draw_text_transformed(0,bh*0.08," PING : "+string(global.ping),0.3*sc,0.3*sc,0);
+	draw_text_transformed(0,bh*0.11," Players in this World : "+string(instance_exists(oPlayer) + instance_number(oOtherPlayer)),0.3*sc,0.3*sc,0);
 	
 	
 	

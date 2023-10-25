@@ -501,6 +501,13 @@ wss.on("connection", (ws) => {
           bullets[bulletId++] = bullet;
         }
         break;
+
+      case "ping":
+        ws.send({
+          eventName: "pong",
+          T: realData.T,
+        });
+        break;
     }
   });
 });

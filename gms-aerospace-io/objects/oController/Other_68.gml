@@ -44,6 +44,8 @@ if(type == network_type_data){
 	
 	switch(eventName){
 		case "created_you":
+		
+		show_message(buffer_processed)
 			global.clientId = realData.clientId
 			global.roomId = realData.roomId
 			
@@ -147,7 +149,7 @@ if(type == network_type_data){
 		
 		
 		case "pong":
-		global.ping = current_time - real(realData.ct)
+		global.ping = current_time - real(realData.T)
 		break;
 		
 		

@@ -3,3 +3,7 @@ connect = network_connect_raw_async(socket, "localhost",3000)
 
 global.clientId = -1
 global.roomId = "public"
+
+global.ping = -1
+
+alarm[0] = 10
