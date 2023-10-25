@@ -10,9 +10,9 @@ if(!instance_exists(oPlayer) and room = Room_World){
 	draw_set_halign(fa_center);
 	draw_set_valign(fa_center);
 	
-	draw_text_transformed(bw*0.5, bh*0.37, "Player Stats", 0.7*sc, 0.7*sc, 0);
+	draw_text_transformed(bw*0.5, bh*0.37, "Player Stats", 0.6*sc, 0.6*sc, 0);
 	
-	draw_text_transformed(bw*0.5, bh*0.48, "Kills : "+string(score), 0.7*sc, 0.7*sc, 0);
+	draw_text_transformed(bw*0.5, bh*0.48, "Kills : "+string(score), 0.5*sc, 0.5*sc, 0);
 	
 	draw_text_transformed(bw*0.5, bh*0.58, "Player "+myKiller+" took you down!", 0.2*sc, 0.2*sc, 0);
 	

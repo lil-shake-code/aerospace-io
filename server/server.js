@@ -6,7 +6,7 @@ var players = {};
 var bullets = {};
 var clientId = 0;
 var bulletId = 0;
-var MAX_BOTS = 10;
+var MAX_BOTS = 1;
 
 const GAME_WIDTH = 3000;
 const GAME_HEIGHT = 3000;
