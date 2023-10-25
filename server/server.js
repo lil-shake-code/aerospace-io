@@ -117,6 +117,10 @@ function gameLoop() {
 
       for (var j in players) {
         var otherPlayer = players[j];
+        //if roomId is different, skip this player
+        if (otherPlayer.roomId != player.roomId) {
+          continue;
+        }
         if (otherPlayer.clientId != player.clientId) {
           var d = distance(player.x, player.y, otherPlayer.x, otherPlayer.y);
           if (d < closestDistance) {
@@ -142,6 +146,7 @@ function gameLoop() {
               A: player.A,
               speed: 15,
               firedBy: player.clientId,
+              roomId: player.roomId,
             };
             bullets[bulletId++] = bullet;
 
@@ -191,6 +196,10 @@ function gameLoop() {
 
       for (var j in players) {
         var player = players[j];
+        //chek same room
+        if (player.roomId != bullet.roomId) {
+          continue;
+        }
         if (player.ws) {
           player.ws.send(JSON.stringify(sendThis));
         }
@@ -201,6 +210,10 @@ function gameLoop() {
     //check if bullet is colliding with player
     for (var j in players) {
       var player = players[j];
+      //check if same room
+      if (player.roomId != bullet.roomId) {
+        continue;
+      }
       if (bullet.firedBy != player.clientId) {
         if (checkBulletCollision(bullet, player)) {
           delete bullets[i];
@@ -243,8 +256,9 @@ function gameLoop() {
             try {
               players[bullet.firedBy].kills += 1;
             } catch (e) {
-              console.log(e);
-              console.log("bullet fired by: " + bullet.firedBy);
+              console.log(
+                "Error in adding a kill to player, most likely the player is dead"
+              );
             }
           }
 
@@ -278,7 +292,7 @@ function createBots() {
       speed: 10,
       health: 100,
       kills: 0,
-      roomId: "public",
+      roomId: "public", ///BOTS WILL ONLY EXIST in public room
       username: "bot",
       ws: null,
       bot: {
@@ -300,6 +314,11 @@ function createBots() {
 
     for (var j in players) {
       var otherPlayer = players[j];
+
+      //check if same room
+      if (otherPlayer.roomId != player.roomId) {
+        continue;
+      }
 
       if (otherPlayer.clientId != player.clientId) {
         //if ws is not null
@@ -328,6 +347,11 @@ function globalStateUpdate() {
 
     for (var j in players) {
       var otherPlayer = players[j];
+      //check if same room
+      if (otherPlayer.roomId != player.roomId) {
+        continue;
+      }
+
       if (otherPlayer.ws) {
         otherPlayer.ws.send(JSON.stringify(sendThis));
       }
@@ -350,6 +374,11 @@ function bulletStateUpdate() {
 
     for (var j in players) {
       var player = players[j];
+      //check if same room
+      if (player.roomId != bullet.roomId) {
+        continue;
+      }
+
       if (player.ws) {
         player.ws.send(JSON.stringify(sendThis));
       }
@@ -380,7 +409,7 @@ wss.on("connection", (ws) => {
           speed: 10,
           health: 100,
           kills: 0,
-          roomId: "public",
+          roomId: realData.roomId,
           username: realData.username,
           ws: ws,
           bot: null,
@@ -412,6 +441,11 @@ wss.on("connection", (ws) => {
         for (var i in players) {
           var otherPlayer = players[i];
 
+          //check if same room
+          if (otherPlayer.roomId != player.roomId) {
+            continue;
+          }
+
           if (otherPlayer.clientId != player.clientId) {
             if (otherPlayer.ws) {
               otherPlayer.ws.send(JSON.stringify(sendThis));
@@ -423,6 +457,11 @@ wss.on("connection", (ws) => {
 
         for (var i in players) {
           var otherPlayer = players[i];
+
+          //check if same room
+          if (otherPlayer.roomId != player.roomId) {
+            continue;
+          }
 
           if (otherPlayer.clientId != player.clientId) {
             ws.send(
@@ -457,6 +496,7 @@ wss.on("connection", (ws) => {
             A: player.A,
             speed: 15,
             firedBy: player.clientId,
+            roomId: player.roomId,
           };
           bullets[bulletId++] = bullet;
         }
