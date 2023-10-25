@@ -45,7 +45,7 @@ if(type == network_type_data){
 	switch(eventName){
 		case "created_you":
 		
-		show_message(buffer_processed)
+
 			global.clientId = realData.clientId
 			global.roomId = realData.roomId
 			

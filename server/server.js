@@ -39,7 +39,7 @@ function distance(x1, y1, x2, y2) {
   return Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2);
 }
 
-function bestSpawnPoint(players, spawnPoints) {
+function bestSpawnPoint(players, spawnPoints, roomId = "public") {
   let bestPoint = null;
   let bestDistance = -Infinity; // Initialize to a very small value
 
@@ -49,6 +49,10 @@ function bestSpawnPoint(players, spawnPoints) {
 
     for (let clientId in players) {
       let player = players[clientId];
+
+      if (player.roomId != roomId) {
+        continue;
+      }
       let d = distance(currentPoint.x, currentPoint.y, player.x, player.y);
       if (d < minDist) {
         minDist = d;
@@ -63,8 +67,6 @@ function bestSpawnPoint(players, spawnPoints) {
 
   return bestPoint;
 }
-
-console.log(bestSpawnPoint(players, spawnPoints));
 
 function outOfBounds(x, y) {
   //return {x,y} with corrected posiiton inside the game
@@ -282,7 +284,7 @@ function createBots() {
 
   //if there are less than MAX_BOTS, create a new bot
   if (botCount < MAX_BOTS) {
-    var spawnPoint = bestSpawnPoint(players, spawnPoints);
+    var spawnPoint = bestSpawnPoint(players, spawnPoints, "public");
     var player = {
       clientId: clientId++,
       x: spawnPoint.x,
@@ -399,7 +401,7 @@ wss.on("connection", (ws) => {
 
     switch (realData.eventName) {
       case "create_me":
-        var spawnPoint = bestSpawnPoint(players, spawnPoints);
+        var spawnPoint = bestSpawnPoint(players, spawnPoints, realData.roomId);
         var player = {
           clientId: clientId++,
           x: spawnPoint.x,
@@ -503,10 +505,12 @@ wss.on("connection", (ws) => {
         break;
 
       case "ping":
-        ws.send({
-          eventName: "pong",
-          T: realData.T,
-        });
+        ws.send(
+          JSON.stringify({
+            eventName: "pong",
+            T: realData.T,
+          })
+        );
         break;
     }
   });

@@ -42,12 +42,12 @@ if( room = Room_World){
 	
 	
 	draw_set_color(c_yellow);
-	draw_set_font(ftArial);
 	
-	draw_text_transformed(0,bh*0.02," FPS : "+string(fps),0.3*sc,0.3*sc,0);
-	draw_text_transformed(0,bh*0.05," CONNECTED to  : "+global.roomId,0.3*sc,0.3*sc,0);
-	draw_text_transformed(0,bh*0.08," PING : "+string(global.ping),0.3*sc,0.3*sc,0);
-	draw_text_transformed(0,bh*0.11," Players in this World : "+string(instance_exists(oPlayer) + instance_number(oOtherPlayer)),0.3*sc,0.3*sc,0);
+	
+	draw_text_transformed(0,bh*0.02," FPS : "+string(fps),0.15*sc,0.15*sc,0);
+	draw_text_transformed(0,bh*0.05," CONNECTED to  : "+global.roomId,0.15*sc,0.15*sc,0);
+	draw_text_transformed(0,bh*0.08," PING : "+string(global.ping)+"ms",0.15*sc,0.15*sc,0);
+	draw_text_transformed(0,bh*0.11," Players in this World : "+string(instance_exists(oPlayer) + instance_number(oOtherPlayer)),0.15*sc,0.15*sc,0);
 	
 	
 	
