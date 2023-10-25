@@ -405,6 +405,13 @@ wss.on("connection", (ws) => {
 
     switch (realData.eventName) {
       case "create_me":
+        if (!realData.roomId) {
+          realData.roomId = "public";
+        }
+        //if type is not string, set it to public
+        if (typeof realData.roomId != "string") {
+          realData.roomId = "public";
+        }
         var spawnPoint = bestSpawnPoint(players, spawnPoints, realData.roomId);
         var player = {
           clientId: clientId++,

@@ -9,3 +9,6 @@ skin_cherry,
 skin_blue_gold
 ]
 
+
+global.roomId = "public"
+

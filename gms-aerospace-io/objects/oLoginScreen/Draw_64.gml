@@ -29,6 +29,26 @@ if(mouse_check_button_pressed(mb_left)){
 
 }
 
+//play private
+draw_set_color(c_red)
+draw_roundrect(bw*0.43, bh*0.86, bw*0.57, bh*0.94,false)
+draw_set_color(c_white);
+draw_text_transformed(bw/2, bh*.9, "PLAY PRIVATE ",sc,sc,0);
+if(mouse_check_button_pressed(mb_left)){
+	if(point_in_rectangle(mx,my,bw*0.43, bh*0.86, bw*0.57, bh*0.94)){
+		
+		global.roomId = get_string("Tell the name of the room you want to join or create","public")
+		room_goto(Room_World)
+		
+		
+		view_wport[0] = 1080*sc;
+		view_hport[0] = view_wport[0]*bh/bw;
+		camera_set_view_size(view_camera[0], view_wport[0], view_hport[0]);
+		window_set_size(bw, bh);
+	}
+
+}
+
 
 
 

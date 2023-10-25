@@ -13,6 +13,7 @@ if(old_health!=enemyHealth)
 }
 
 
+
 // Setting the color, font, and alignment for the text
 draw_set_color(c_white);
 draw_set_font(font_usernames);
