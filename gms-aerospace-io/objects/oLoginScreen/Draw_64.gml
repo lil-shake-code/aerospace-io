@@ -77,4 +77,32 @@ draw_sprite_ext(spr,0,bw*0.5,bh*0.6,sc*2,sc*2,
 point_direction(bw*0.5,bh*0.6,mx,my)
 ,c_white,1)
 draw_set_color(c_white)
-draw_text_transformed(bw/2, bh*0.68, "Click on skin to change",sc,sc,0);;
+draw_text_transformed(bw/2, bh*0.68, "Click on skin to change",sc,sc,0);
+
+
+
+///IOGAMES.FORUM PLUG
+draw_text_transformed(bw*0.8, bh*0.4, "Join the Largest IO Community!",sc,sc,0);
+var c = make_color_hsv(255*abs(sin(current_time*0.003)),255,255)
+draw_sprite_ext(iogamesforum,0,bw*0.8, bh*0.55 , sc*0.7,0.7*sc,0,c,1) //
+var x1 = 577
+
+var y1 = 286
+draw_rectangle(bw*0.8 - x1/2*sc*0.7 , 
+bh*0.55 - y1/2*sc*0.7,
+bw*0.8 + x1/2*sc*0.7 , 
+bh*0.55 + y1/2*sc*0.7,true)
+if(point_in_rectangle(mx,my,
+bw*0.8 - x1/2*sc*0.7 , 
+bh*0.55 - y1/2*sc*0.7,
+bw*0.8 + x1/2*sc*0.7 , 
+bh*0.55 + y1/2*sc*0.7,
+) and mouse_check_button_pressed(mb_left)){
+	
+	url_open_ext("http://iogames.forum", "_blank");
+
+
+	
+}
+
+

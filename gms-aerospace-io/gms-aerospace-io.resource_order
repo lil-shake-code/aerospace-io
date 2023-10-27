@@ -27,6 +27,7 @@
     {"name":"sBullet","order":2,"path":"sprites/sBullet/sBullet.yy",},
     {"name":"fMenu","order":2,"path":"fonts/fMenu/fMenu.yy",},
     {"name":"sLadder","order":4,"path":"sprites/sLadder/sLadder.yy",},
+    {"name":"iogamesforum","order":8,"path":"sprites/iogamesforum/iogamesforum.yy",},
     {"name":"oOtherPlayer","order":8,"path":"objects/oOtherPlayer/oOtherPlayer.yy",},
     {"name":"Room_World","order":2,"path":"rooms/Room_World/Room_World.yy",},
     {"name":"sRandomStarsBackground","order":6,"path":"sprites/sRandomStarsBackground/sRandomStarsBackground.yy",},
