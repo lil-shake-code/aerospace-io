@@ -237,6 +237,11 @@ function gameLoop() {
           for (var k in players) {
             var otherPlayer = players[k];
 
+            //check if same room
+            if (otherPlayer.roomId != bullet.roomId) {
+              continue;
+            }
+
             if (otherPlayer.ws) {
               otherPlayer.ws.send(JSON.stringify(sendThis));
             }

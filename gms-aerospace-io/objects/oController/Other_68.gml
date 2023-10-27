@@ -155,6 +155,17 @@ if(type == network_type_data){
 		break;
 		
 		
+		
+		case "destroy_bullet":
+		with(oBullet){
+			if(bulletId== realData.bulletId){
+				instance_destroy()
+			}
+		}
+		
+		break;
+		
+		
 		case "pong":
 		global.ping = current_time - real(realData.T)
 		break;
