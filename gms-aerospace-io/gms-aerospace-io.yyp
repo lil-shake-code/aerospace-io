@@ -36,6 +36,7 @@
   },
   "resources": [
     {"id":{"name":"Room_Name","path":"rooms/Room_Name/Room_Name.yy",},},
+    {"id":{"name":"oParticleSystem","path":"objects/oParticleSystem/oParticleSystem.yy",},},
     {"id":{"name":"oBullet","path":"objects/oBullet/oBullet.yy",},},
     {"id":{"name":"skin_deserteagle","path":"sprites/skin_deserteagle/skin_deserteagle.yy",},},
     {"id":{"name":"skin_cherry","path":"sprites/skin_cherry/skin_cherry.yy",},},

@@ -19,6 +19,7 @@
   ],
   "ResourceOrderSettings": [
     {"name":"Room_Name","order":1,"path":"rooms/Room_Name/Room_Name.yy",},
+    {"name":"oParticleSystem","order":9,"path":"objects/oParticleSystem/oParticleSystem.yy",},
     {"name":"oBullet","order":4,"path":"objects/oBullet/oBullet.yy",},
     {"name":"skin_deserteagle","order":3,"path":"sprites/skin_deserteagle/skin_deserteagle.yy",},
     {"name":"skin_cherry","order":2,"path":"sprites/skin_cherry/skin_cherry.yy",},
