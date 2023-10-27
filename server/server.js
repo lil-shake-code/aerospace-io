@@ -106,6 +106,13 @@ function gameLoop() {
   for (var i in players) {
     var player = players[i];
 
+    //health regeneration
+    if (player.health < 100) {
+      if (Date.now() - player.lastHitTime > 10000) {
+        player.health += 0.2;
+      }
+    }
+
     if (player.bot) {
       player.bot.lifetime++;
       //recoil
@@ -237,6 +244,8 @@ function gameLoop() {
 
           //reduce player health
           player.health -= 10;
+          //set the last hit time to now
+          player.lastHitTime = Date.now();
           //IF PLAYER DIES
           if (player.health <= 0) {
             var sendThis = {
@@ -303,6 +312,7 @@ function createBots() {
         lifetime: 0,
       },
       skin: Math.floor(Math.random() * 7), //0-6
+      lastHitTime: 0,
     };
 
     players[player.clientId] = player;
@@ -427,6 +437,7 @@ wss.on("connection", (ws) => {
           ws: ws,
           bot: null,
           skin: realData.skin,
+          lastHitTime: 0,
         };
 
         players[player.clientId] = player;

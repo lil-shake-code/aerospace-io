@@ -6,7 +6,7 @@
 	//shader_reset();
 	
 } else shader_reset(); draw_self();
-if(old_health!=health)
+if(old_health>health)
 {
 	old_health = health;
 	pflash = 7;
