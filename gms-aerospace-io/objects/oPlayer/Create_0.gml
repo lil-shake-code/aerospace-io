@@ -8,7 +8,7 @@ old_health = health;
 sprite_index = global.skins[global.skin];
 
 // Define annular region boundaries
- inner_radius = 18;
+ inner_radius = 32;
  outer_radius = 100;
  
  normalized_value = 0

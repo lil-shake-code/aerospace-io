@@ -172,7 +172,7 @@ function gameLoop() {
         var dy = closestPlayer.y - player.y;
 
         //if the player is close enough, shoot
-        if (closestDistance < 100) {
+        if (closestDistance < 100 + 5 * player.kills) {
           if (player.bot.recoil <= 0) {
             //rotate the bot to face the player
             player.A = Math.atan2(-dy, dx) * (180 / Math.PI);
