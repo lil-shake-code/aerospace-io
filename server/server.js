@@ -269,7 +269,7 @@ function maxBotsSinusoidalValue() {
   let sinValue = Math.sin((2 * Math.PI * now) / fiveMinutes);
 
   // Convert sinusoidal value to range between 1 and 5
-  let result = 3 + 2 * sinValue;
+  let result = 4 + 2 * sinValue;
 
   MAX_BOTS = Math.floor(result);
 }
