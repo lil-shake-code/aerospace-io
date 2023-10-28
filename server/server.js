@@ -258,9 +258,28 @@ function balanceSeleniums() {
     }
   }
 }
+function maxBotsSinusoidalValue() {
+  // Get the current time in milliseconds since 1970
+  let now = Date.now();
+
+  // Convert 5 minutes to milliseconds for clarity
+  let fiveMinutes = 5 * 60 * 1000;
+
+  // Calculate a sinusoidal value between -1 and 1
+  let sinValue = Math.sin((2 * Math.PI * now) / fiveMinutes);
+
+  // Convert sinusoidal value to range between 1 and 5
+  let result = 3 + 2 * sinValue;
+
+  MAX_BOTS = Math.floor(result);
+}
+
+//console.log(sinusoidalValue()); // This will give a value between 1 and 5, oscillating every 5 minutes
 
 //Game Loop
 function gameLoop() {
+  maxBotsSinusoidalValue();
+
   //balance seleniums
   balanceSeleniums();
 
