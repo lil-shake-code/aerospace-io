@@ -10,6 +10,7 @@ var bulletId = 0;
 var seleniumId = 0;
 var MAX_BOTS = 7;
 var MAX_SELENIUMS = 100;
+var realPlayerCount = 0;
 
 const GAME_WIDTH = 3000;
 const GAME_HEIGHT = 3000;
@@ -329,6 +330,10 @@ function gameLoop() {
   }
 
   //update players
+
+  if (realPlayerCount == 0) {
+    return;
+  }
   for (var i in players) {
     var player = players[i];
 
@@ -559,10 +564,13 @@ setInterval(gameLoop, 1000 / 60);
 function createBots() {
   //go through the players and count how many are bots
   var botCount = 0;
+  realPlayerCount = 0;
   for (var i in players) {
     var player = players[i];
     if (player.bot) {
       botCount++;
+    } else {
+      realPlayerCount++;
     }
   }
 
