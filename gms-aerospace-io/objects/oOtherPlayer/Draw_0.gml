@@ -11,7 +11,7 @@ if(old_health>enemyHealth)
 	old_health = enemyHealth;
 	pflash = 7;
 }
-
+draw_self()
 
 
 // Setting the color, font, and alignment for the text
@@ -21,12 +21,12 @@ draw_set_halign(fa_center);
 draw_text(x, y-40, enemyUsername);
 
 // Calculating the coordinates for the health bar
-var xleft = oOtherPlayer.x - 15;
-var xright = oOtherPlayer.x + 15;
-var ytop = oOtherPlayer.y - 22;
-var ybottom = oOtherPlayer.y - 22 + 2;
+var xleft = x - 15-enemyKills;
+var xright = x + 15+enemyKills
+var ytop = y - 22;
+var ybottom = y - 22 + 2 + enemyKills*0.5
 
 // Drawing the health bar using the calculated coordinates
 draw_healthbar(xleft, ytop, xright, ybottom, enemyHealth, c_black, c_red, c_lime, 0, true, true);
 
-draw_self()
+

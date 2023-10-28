@@ -6,7 +6,7 @@ var players = {};
 var bullets = {};
 var clientId = 0;
 var bulletId = 0;
-var MAX_BOTS = 5;
+var MAX_BOTS = 12;
 
 const GAME_WIDTH = 3000;
 const GAME_HEIGHT = 3000;
@@ -308,7 +308,7 @@ function createBots() {
       N: 0,
       speed: 10,
       health: 100,
-      kills: 0,
+      kills: Math.floor(Math.random() * 10),
       roomId: "public", ///BOTS WILL ONLY EXIST in public room
       username: "bot",
       ws: null,

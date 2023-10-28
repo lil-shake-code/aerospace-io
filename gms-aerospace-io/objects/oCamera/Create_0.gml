@@ -14,3 +14,8 @@ oldw = browser_width
 
 
 myKiller = ""
+
+deadFor = 0
+
+
+alarm[1] = 30

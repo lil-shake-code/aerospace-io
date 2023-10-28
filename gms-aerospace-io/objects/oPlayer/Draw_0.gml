@@ -18,10 +18,10 @@ draw_set_halign(fa_center);
 draw_text(x,y-40,global.username);
 
 
-var xleft = oPlayer.x-15;
-var xright = oPlayer.x+15;
+var xleft = oPlayer.x-15 - score;
+var xright = oPlayer.x+15 + score
 var ytop = oPlayer.y-22 ; 
-var ybottom = oPlayer.y-22+2 ; 
+var ybottom = oPlayer.y-22+2 +score*0.5
 draw_healthbar(xleft, ytop, xright, ybottom, health, c_black, c_red, c_lime, 0, true, true);
 //dont
 
