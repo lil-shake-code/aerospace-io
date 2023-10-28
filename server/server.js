@@ -565,8 +565,7 @@ function createBots() {
     }
   }
 
-  //if there are less than MAX_BOTS, create a new bot
-  if (botCount < MAX_BOTS + players.length) {
+  if (players.length < MAX_BOTS) {
     var spawnPoint = bestSpawnPoint(players, spawnPoints, "public");
     //for the name of the bot, 30% chance use the name from the list, 70% chance use empty string
     var botName = "";
