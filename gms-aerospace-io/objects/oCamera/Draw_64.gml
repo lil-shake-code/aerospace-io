@@ -129,20 +129,40 @@ if( room = Room_World){
 	if(instance_exists(oPlayer)){
 		
 		
-		draw_sprite_ext(sSky,0, bw-1500*sc*0.1, bh-1500*sc*0.1,
-		sc*0.1,sc*0.1,0,c_white,0.5
+		draw_sprite_ext(sSky,0, bw-1500*sc*0.07, bh-1500*sc*0.07,
+		sc*0.07,sc*0.07,0,c_white,0.5
 		)
+		draw_set_color(c_white)
+		draw_rectangle(bw-3000*sc*0.07, bh-3000*sc*0.07,bw-2,bh,true)
 		
 		with(oOtherPlayer){
 			draw_sprite_ext(id.sprite_index,0,
-			bw-3000*sc*0.1 + x/3000 * (3000*sc*0.1),
-			bh-3000*sc*0.1 +  y/3000 * (3000*sc*0.1),
+			bw-3000*sc*0.07 + x/3000 * (3000*sc*0.07),
+			bh-3000*sc*0.07 +  y/3000 * (3000*sc*0.07),
 			0.5,0.5,
 			id.image_angle,
 			c_white,
 			0.5
 			)
 		}
+		
+		with(oPlayer){
+			
+		draw_sprite_ext(id.sprite_index,0,
+			bw-3000*sc*0.07 + x/3000 * (3000*sc*0.07),
+			bh-3000*sc*0.07 +  y/3000 * (3000*sc*0.07),
+			0.5,0.5,
+			id.image_angle,
+			c_white,
+			0.5
+			)
+		
+		
+		}
+		
+		
+		
+		
 	}
 
 	

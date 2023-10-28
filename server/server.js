@@ -272,6 +272,7 @@ function maxBotsSinusoidalValue() {
   let result = 4 + 2 * sinValue;
 
   MAX_BOTS = Math.floor(result);
+  ///console.log(MAX_BOTS);
 }
 
 //console.log(sinusoidalValue()); // This will give a value between 1 and 5, oscillating every 5 minutes
@@ -565,7 +566,8 @@ function createBots() {
     }
   }
 
-  if (players.length < MAX_BOTS) {
+  if (botCount < MAX_BOTS) {
+    console.log("creating a new bot");
     var spawnPoint = bestSpawnPoint(players, spawnPoints, "public");
     //for the name of the bot, 30% chance use the name from the list, 70% chance use empty string
     var botName = "";
