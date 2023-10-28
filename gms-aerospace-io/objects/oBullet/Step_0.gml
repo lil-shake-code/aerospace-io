@@ -1,4 +1,4 @@
-image_alpha-=(1/120)
+image_alpha-=(1/240)
 
 
 if instance_exists(oParticleSystem) {

@@ -97,7 +97,7 @@ if( room = Room_World){
 		draw_set_color(col)
 	    draw_text_transformed(lbX + padding + lbWidth/2, 
 		lbY + padding  + (i+1) * 35*sc, 
-		string(i + 1) + ". " + playerName + " : " + playerScore+" kills", 
+		string(i + 1) + ". " + playerName + " : " + playerScore, 
 		sc*0.2,sc*0.2,0);  // Adjust positions and spacing as necessary
 	}
 	
@@ -118,7 +118,7 @@ if( room = Room_World){
 		draw_set_color(c_fuchsia)
 		draw_text_transformed(lbX + padding + lbWidth/2,
 		lbY + padding + sc * (maxEntries+2) * 35,
-		string(myRank) + ". " + global.username + " : " + string(score)+" kills", 
+		string(myRank) + ". " + global.username + " : " + string(score), 
 		sc*0.2,sc*0.2,0);
 		
 	

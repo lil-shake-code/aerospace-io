@@ -4,9 +4,12 @@ import { WebSocketServer } from "ws";
 
 var players = {};
 var bullets = {};
+var seleniums = {};
 var clientId = 0;
 var bulletId = 0;
-var MAX_BOTS = 12;
+var seleniumId = 0;
+var MAX_BOTS = 7;
+var MAX_SELENIUMS = 50;
 
 const GAME_WIDTH = 3000;
 const GAME_HEIGHT = 3000;
@@ -211,8 +214,99 @@ function getShootingCharacteristics(level) {
   };
 }
 
+function balanceSeleniums() {
+  //get length of seleniums
+  var seleniumCount = Object.keys(seleniums).length;
+
+  //if there are less than MAX_SELENIUMS, create a new selenium
+
+  if (seleniumCount < MAX_SELENIUMS) {
+    // console.log(
+    //   `there are ${seleniumCount} sels  but  less than ${MAX_SELENIUMS}, create a new selenium`
+    // );
+    var selenium = {
+      seleniumId: seleniumId++,
+      x: Math.random() * GAME_WIDTH,
+      y: Math.random() * GAME_HEIGHT,
+      value: Math.floor(Math.random() * 10) / 10 + 1,
+      roomId: "public", ///SELENIUMS WILL ONLY EXIST in public room
+    };
+    //add selenium to seleniums
+    seleniums[selenium.seleniumId] = selenium;
+
+    //tell other players we created this selenium
+    var sendThis = {
+      eventName: "create_selenium",
+      seleniumId: selenium.seleniumId,
+      x: selenium.x,
+      y: selenium.y,
+      value: selenium.value,
+    };
+
+    for (var j in players) {
+      var otherPlayer = players[j];
+
+      //check if same room
+      if (otherPlayer.roomId != selenium.roomId) {
+        continue;
+      }
+
+      if (otherPlayer.ws) {
+        otherPlayer.ws.send(JSON.stringify(sendThis));
+      }
+    }
+  }
+}
+
 //Game Loop
 function gameLoop() {
+  //balance seleniums
+  balanceSeleniums();
+
+  //see if seleniums are colliding with players
+  for (var i in seleniums) {
+    //check bullet collision but instead of bullet, use selenium
+    var selenium = seleniums[i];
+
+    //check if selenium is colliding with player
+    for (var j in players) {
+      // console.log("checking selenium collision with player");
+      var player = players[j];
+      //check if same room
+      if (player.roomId != selenium.roomId) {
+        console.log("not same room of selenium and player");
+        continue;
+      }
+      if (checkBulletCollision(selenium, player)) {
+        console.log("selenium collision");
+        //delete selenium
+        delete seleniums[i];
+
+        ///add to kills
+        player.kills += selenium.value / 10;
+
+        //tell players to delete this selenium
+        var sendThis = {
+          eventName: "destroy_selenium",
+          seleniumId: i,
+        };
+
+        for (var k in players) {
+          var otherPlayer = players[k];
+
+          //check if same room
+          if (otherPlayer.roomId != selenium.roomId) {
+            continue;
+          }
+
+          if (otherPlayer.ws) {
+            otherPlayer.ws.send(JSON.stringify(sendThis));
+          }
+        }
+      }
+    }
+  }
+
   //update players
   for (var i in players) {
     var player = players[i];
@@ -613,6 +707,26 @@ wss.on("connection", (ws) => {
             y: player.y,
           })
         );
+
+        //tell this player about all the seleniums
+        for (var i in selenium) {
+          var selenium = selenium[i];
+
+          //check if same room
+          if (selenium.roomId != player.roomId) {
+            continue;
+          }
+
+          ws.send(
+            JSON.stringify({
+              eventName: "create_selenium",
+              seleniumId: selenium.seleniumId,
+              x: selenium.x,
+              y: selenium.y,
+              value: selenium.value,
+            })
+          );
+        }
 
         //tell other players we created this guy
         var sendThis = {

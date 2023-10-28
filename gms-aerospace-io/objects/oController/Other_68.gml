@@ -78,6 +78,20 @@ if(type == network_type_data){
 		
 		
 		
+		case "create_selenium":
+		
+		var selenium = instance_create_layer(realData.x,realData.y,"Instances",oSelenium)
+		selenium.seleniumId = realData.seleniumId;
+		selenium.image_xscale = realData.value
+		selenium.image_yscale = selenium.image_xscale
+	
+
+	
+		break;
+		
+		
+		
+		
 		
 		
 		
@@ -131,7 +145,7 @@ if(type == network_type_data){
 			b.direction = realData.A
 			b.image_angle = b.direction
 			b.image_blend = make_color_hsv(irandom(255) , irandom(80),255)
-			b.image_xscale = realData.damage/5
+			b.image_xscale = realData.D/5
 			b.image_yscale = b.image_xscale
 		
 		}
@@ -161,6 +175,17 @@ if(type == network_type_data){
 		case "destroy_bullet":
 		with(oBullet){
 			if(bulletId== realData.bulletId){
+				instance_destroy()
+			}
+		}
+		
+		break;
+		
+		
+		
+		case "destroy_selenium":
+		with(oSelenium){
+			if(seleniumId== realData.seleniumId){
 				instance_destroy()
 			}
 		}
