@@ -34,7 +34,7 @@ image_yscale = image_xscale
 outer_radius = min(browser_height, browser_width)/5
 
 //SHOOT
-if(mouse_check_button_pressed(mb_left)){
+if(mouse_check_button(mb_left)){
 	//create bullet
 	var Buffer = buffer_create(1, buffer_grow, 1)
 	//WHAT DATA 

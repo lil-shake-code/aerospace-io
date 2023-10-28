@@ -94,10 +94,31 @@ function outOfBounds(x, y) {
 function checkBulletCollision(bullet, player) {
   //check if bullet is colliding with player
   var d = distance(bullet.x, bullet.y, player.x, player.y);
-  if (d < 20) {
+
+  if (d < ((player.kills + 1) * 0.1 + 1) * 32) {
     return true;
   }
   return false;
+}
+function getShootingCharacteristics(level) {
+  // Calculate damage
+  let damage = Math.min(5 + level, 20);
+
+  // Calculate bullet speed
+  let bulletSpeed = Math.max(15 - level, 5);
+
+  // Calculate recoil time using sine wave for oscillation
+  let recoilTime = 40 + 20 * Math.sin((level * Math.PI) / 10); // Oscillates between 20 and 60 over 10 levels
+
+  // Calculate spread - the number of bullets fired in 1 trigger
+  let spread = Math.min(1 + Math.floor(level / 2), 5);
+
+  return {
+    damage: damage,
+    bulletSpeed: bulletSpeed,
+    recoilTime: recoilTime,
+    spread: spread,
+  };
 }
 
 //Game Loop
@@ -105,6 +126,11 @@ function gameLoop() {
   //update players
   for (var i in players) {
     var player = players[i];
+
+    //reduce recoil
+    if (player.recoil > 0) {
+      player.recoil--;
+    }
 
     //health regeneration
     if (player.health < 100) {
@@ -150,18 +176,25 @@ function gameLoop() {
           if (player.bot.recoil <= 0) {
             //rotate the bot to face the player
             player.A = Math.atan2(-dy, dx) * (180 / Math.PI);
-            var bullet = {
-              x: player.x,
-              y: player.y,
-              A: player.A,
-              speed: 15,
-              firedBy: player.clientId,
-              roomId: player.roomId,
-            };
-            bullets[bulletId++] = bullet;
+
+            ///repeat x times
+
+            for (var k = 0; k < player.shootingCharacteristics.spread; k++) {
+              var bullet = {
+                x: player.x,
+                y: player.y,
+                A: player.A + Math.random() * 10 - 5,
+                speed: player.shootingCharacteristics.bulletSpeed,
+                damage: player.shootingCharacteristics.damage,
+                firedBy: player.clientId,
+                roomId: player.roomId,
+              };
+              bullets[bulletId++] = bullet;
+            }
 
             //recoil
-            player.bot.recoil = Math.floor(Math.random() * 30) + 10;
+            player.bot.recoil = player.shootingCharacteristics.recoilTime;
+            player.recoil = player.shootingCharacteristics.recoilTime;
           }
         } else {
           //just make the bot move in the direction of the player 5 pixels
@@ -272,6 +305,11 @@ function gameLoop() {
             //find the player who fired the bullet and add 1 to kills
             try {
               players[bullet.firedBy].kills += 1;
+
+              //shooting characteristics
+
+              players[bullet.firedBy].shootingCharacteristics =
+                getShootingCharacteristics(players[bullet.firedBy].kills);
             } catch (e) {
               console.log(
                 "Error in adding a kill to player, most likely the player is dead"
@@ -318,7 +356,9 @@ function createBots() {
       },
       skin: Math.floor(Math.random() * 7), //0-6
       lastHitTime: 0,
+      recoil: 0,
     };
+    player.shootingCharacteristics = getShootingCharacteristics(player.kills);
 
     players[player.clientId] = player;
 
@@ -391,6 +431,7 @@ function bulletStateUpdate() {
       x: bullet.x,
       y: bullet.y,
       A: bullet.A,
+      D: bullet.damage,
     };
 
     for (var j in players) {
@@ -443,6 +484,8 @@ wss.on("connection", (ws) => {
           bot: null,
           skin: realData.skin,
           lastHitTime: 0,
+          shootingCharacteristics: getShootingCharacteristics(0),
+          recoil: 0,
         };
 
         players[player.clientId] = player;
@@ -522,15 +565,27 @@ wss.on("connection", (ws) => {
       case "create_bullet":
         var player = players[realData.clientId];
         if (player) {
-          var bullet = {
-            x: player.x,
-            y: player.y,
-            A: player.A,
-            speed: 15,
-            firedBy: player.clientId,
-            roomId: player.roomId,
-          };
-          bullets[bulletId++] = bullet;
+          //recoil
+          if (player.recoil > 0) {
+            break;
+          }
+
+          //repeat x times
+          for (var i = 0; i < player.shootingCharacteristics.spread; i++) {
+            var bullet = {
+              x: player.x,
+              y: player.y,
+              A: player.A + Math.random() * 10 - 5,
+              speed: player.shootingCharacteristics.bulletSpeed,
+              damage: player.shootingCharacteristics.damage,
+              firedBy: player.clientId,
+              roomId: player.roomId,
+            };
+            bullets[bulletId++] = bullet;
+          }
+
+          //recoil
+          player.recoil = player.shootingCharacteristics.recoilTime;
         }
         break;
 

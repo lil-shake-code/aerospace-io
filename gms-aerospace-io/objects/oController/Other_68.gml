@@ -131,6 +131,7 @@ if(type == network_type_data){
 			b.direction = realData.A
 			b.image_angle = b.direction
 			b.image_blend = make_color_hsv(irandom(255) , irandom(80),255)
+			b.image_xscale = realData.damage/5
 		
 		}
 		break;
