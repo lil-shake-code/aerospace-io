@@ -177,7 +177,7 @@ if(type == network_type_data){
 			if(bulletId== realData.bulletId){
 				part_emitter_clear(oParticleSystem.partSystem, emitter)
 				part_emitter_destroy(oParticleSystem.partSystem, emitter);
-				instance_destroy()
+				instance_destroy(id)
 			}
 		}
 		
@@ -188,7 +188,7 @@ if(type == network_type_data){
 		case "destroy_selenium":
 		with(oSelenium){
 			if(seleniumId== realData.seleniumId){
-				instance_destroy()
+				instance_destroy(id)
 			}
 		}
 		
