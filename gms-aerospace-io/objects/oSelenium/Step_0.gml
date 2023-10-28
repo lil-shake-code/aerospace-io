@@ -1,0 +1,1 @@
+image_angle+=sin(seleniumId)/10
