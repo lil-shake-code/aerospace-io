@@ -420,6 +420,18 @@ function gameLoop() {
         eventName: "destroy_bullet",
         bulletId: i,
       };
+
+      for (var j in players) {
+        var player = players[j];
+        //check if same room
+        if (player.roomId != bullet.roomId) {
+          continue;
+        }
+        if (player.ws) {
+          player.ws.send(JSON.stringify(sendThis));
+        }
+      }
+
       continue;
     }
 

@@ -175,6 +175,7 @@ if(type == network_type_data){
 		case "destroy_bullet":
 		with(oBullet){
 			if(bulletId== realData.bulletId){
+				part_emitter_clear(oParticleSystem.partSystem, emitter)
 				part_emitter_destroy(oParticleSystem.partSystem, emitter);
 				instance_destroy()
 			}
