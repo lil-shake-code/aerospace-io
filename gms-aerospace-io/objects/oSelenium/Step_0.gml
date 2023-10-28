@@ -1,1 +1,1 @@
-image_angle+=sin(seleniumId)/10
+image_angle+=sin(seleniumId)
