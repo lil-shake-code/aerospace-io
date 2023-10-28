@@ -22,6 +22,96 @@ const spawnPoints = [
   { x: 2513, y: 866 }, //corona borealis
 ];
 
+const botNames = [
+  "Amy",
+  "Bob",
+  "Cara",
+  "Dino",
+  "Ella",
+  "Finn",
+  "Gail",
+  "Hugo",
+  "Iris",
+  "Jack",
+  "Kara",
+  "Liam",
+  "Mila",
+  "Noah",
+  "Opal",
+  "Pete",
+  "Quinn",
+  "Rhea",
+  "Seth",
+  "Tara",
+  "Uma",
+  "Vivi",
+  "Walt",
+  "Xena",
+  "Yara",
+  "Zane",
+  "Elmo",
+  "Brie",
+  "Cleo",
+  "Drake",
+  "Eve",
+  "Flint",
+  "Grace",
+  "Hank",
+  "Ivy",
+  "Jade",
+  "Kobe",
+  "Lana",
+  "Mace",
+  "Nina",
+  "Orin",
+  "Page",
+  "Reed",
+  "Sage",
+  "Tess",
+  "Ursa",
+  "Vera",
+  "Wade",
+  "Xero",
+  "Yves",
+  "Zara",
+  "Alto",
+  "Bea",
+  "Clay",
+  "Drew",
+  "Echo",
+  "Faye",
+  "Glenn",
+  "Heidi",
+  "Ina",
+  "Joey",
+  "Kai",
+  "Lola",
+  "Mack",
+  "Nell",
+  "Omar",
+  "Pearl",
+  "Rico",
+  "Suki",
+  "Tia",
+  "Udon",
+  "Vex",
+  "Wolf",
+  "Xyla",
+  "Yogi",
+  "Zoe",
+  "Axel",
+  "Blu",
+  "Cruz",
+  "Dawn",
+  "Ed",
+  "Fia",
+  "Guy",
+  "Hera",
+  "Ian",
+  "Jazz",
+];
+var currentBotName = 0;
+
 // Create an HTTP server
 const server = createServer((req, res) => {
   res.writeHead(404, { "Content-Type": "text/plain" });
@@ -188,6 +278,7 @@ function gameLoop() {
                 damage: player.shootingCharacteristics.damage,
                 firedBy: player.clientId,
                 roomId: player.roomId,
+                lifetime: 120,
               };
               bullets[bulletId++] = bullet;
             }
@@ -224,6 +315,19 @@ function gameLoop() {
   //update bullets
   for (var i in bullets) {
     var bullet = bullets[i];
+
+    //reduce lifetime
+    bullet.lifetime--;
+    //if lifetime is 0, delete this bullet
+    if (bullet.lifetime <= 0) {
+      delete bullets[i];
+      var sendThis = {
+        eventName: "destroy_bullet",
+        bulletId: i,
+      };
+      continue;
+    }
+
     bullet.x += Math.cos((bullet.A * Math.PI) / 180) * bullet.speed;
     bullet.y -= Math.sin((bullet.A * Math.PI) / 180) * bullet.speed;
 
@@ -338,6 +442,15 @@ function createBots() {
   //if there are less than MAX_BOTS, create a new bot
   if (botCount < MAX_BOTS) {
     var spawnPoint = bestSpawnPoint(players, spawnPoints, "public");
+    //for the name of the bot, 30% chance use the name from the list, 70% chance use empty string
+    var botName = "";
+    if (Math.random() < 0.3) {
+      botName = botNames[currentBotName++];
+      if (currentBotName >= botNames.length) {
+        currentBotName = 0;
+      }
+    }
+
     var player = {
       clientId: clientId++,
       x: spawnPoint.x,
@@ -348,7 +461,7 @@ function createBots() {
       health: 100,
       kills: Math.floor(Math.random() * 10),
       roomId: "public", ///BOTS WILL ONLY EXIST in public room
-      username: "bot",
+      username: botName,
       ws: null,
       bot: {
         recoil: 0,
@@ -580,6 +693,7 @@ wss.on("connection", (ws) => {
               damage: player.shootingCharacteristics.damage,
               firedBy: player.clientId,
               roomId: player.roomId,
+              lifetime: 120,
             };
             bullets[bulletId++] = bullet;
           }
