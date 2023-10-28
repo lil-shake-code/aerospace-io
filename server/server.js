@@ -194,6 +194,7 @@ function checkBulletCollision(bullet, player) {
   return false;
 }
 function getShootingCharacteristics(level) {
+  var level = Math.floor(level);
   // Calculate damage
   let damage = Math.min(5 + level, 20);
 
@@ -553,7 +554,7 @@ function createBots() {
       N: 0,
       speed: 10,
       health: 100,
-      kills: Math.floor(Math.random() * 10),
+      kills: Math.floor(Math.random() * 4),
       roomId: "public", ///BOTS WILL ONLY EXIST in public room
       username: botName,
       ws: null,
