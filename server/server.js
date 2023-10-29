@@ -616,7 +616,7 @@ function gameLoop() {
                 seleniumId: seleniumId++,
                 x: player.x + Math.random() * 60 - 30,
                 y: player.y + Math.random() * 60 - 30,
-                value: player.kills / 10,
+                value: player.kills / 7,
                 roomId: player.roomId, ///SELENIUMS WILL ONLY EXIST in public room
               };
               //add selenium to seleniums
