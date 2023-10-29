@@ -608,6 +608,43 @@ function gameLoop() {
               }
             }
 
+            //make some selenium here
+            //make 5 big seleniums randomly around the player
+
+            for (var k = 0; k < 5; k++) {
+              var selenium = {
+                seleniumId: seleniumId++,
+                x: player.x + Math.random() * 60 - 30,
+                y: player.y + Math.random() * 60 - 30,
+                value: player.kills / 10,
+                roomId: player.roomId, ///SELENIUMS WILL ONLY EXIST in public room
+              };
+              //add selenium to seleniums
+              seleniums[selenium.seleniumId] = selenium;
+
+              //tell other players we created this selenium
+              var sendThis = {
+                eventName: "create_selenium",
+                seleniumId: selenium.seleniumId,
+                x: selenium.x,
+                y: selenium.y,
+                value: selenium.value,
+              };
+
+              for (var l in players) {
+                var otherPlayer = players[l];
+
+                //check if same room
+                if (otherPlayer.roomId != selenium.roomId) {
+                  continue;
+                }
+
+                if (otherPlayer.ws) {
+                  otherPlayer.ws.send(JSON.stringify(sendThis));
+                }
+              }
+            }
+
             //remove player from players
             delete players[player.clientId];
 
