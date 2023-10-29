@@ -11,8 +11,13 @@ if(room ==Room_World)
 
 		if(instance_exists(oPlayer))
 		{
-			var scale =1+(oPlayer.image_xscale-1)/2;
-		}else {scale =1;}
+			 targetScale =1+(oPlayer.image_xscale-1)/2;
+		}else {targetScale =1;}
+		
+		
+		
+		
+		var scale = currentScale
 		
 		
 		if(aspectRatio>1){

@@ -19,3 +19,8 @@ deadFor = 0
 
 
 alarm[1] = 30
+
+
+targetScale =1
+
+currentScale = 1
