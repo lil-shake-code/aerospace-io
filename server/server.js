@@ -1,6 +1,25 @@
-// Import necessary modules
+import express from "express";
 import { createServer } from "http";
 import { WebSocketServer } from "ws";
+import cors from "cors";
+import bodyParser from "body-parser";
+
+const app = express();
+const server = createServer(app);
+const wss = new WebSocketServer({ server });
+
+// CORS configuration for allowing requests from your React frontend
+app.use(
+  cors({
+    origin:
+      //allow all
+      "*",
+  })
+);
+
+server.listen(process.env.PORT || 3000, () => {
+  console.log("Server started on " + server.address().port);
+});
 
 var players = {};
 var bullets = {};
@@ -116,17 +135,70 @@ const botNames = [
 ];
 var currentBotName = 0;
 
-// Create an HTTP server
-const server = createServer((req, res) => {
-  res.writeHead(404, { "Content-Type": "text/plain" });
-  res.end("Not Found");
+//EXPRESS STUFF
+// Body parser middleware for parsing request body
+app.use(bodyParser.json());
+
+// Example API endpoint
+app.get("/admin", (req, res) => {
+  ///send the players dict
+  res.json({
+    players: players,
+    seleniums: seleniums,
+    maxSeleniums: MAX_SELENIUMS,
+  });
 });
 
-// Create a WebSocket server by passing the HTTP server instance to `WebSocket.Server`
-const wss = new WebSocketServer({
-  port:
-    //PROCESS ENV PORT
-    process.env.PORT || 3000,
+app.post("/admin/setMaxSeleniums", (req, res) => {
+  //get max seleniums from body
+  var maxSeleniums = parseInt(req.body.maxSeleniums);
+
+  if (maxSeleniums) {
+    //IF ITS  A NUMBER
+    if (typeof maxSeleniums == "number" && !isNaN(maxSeleniums)) {
+      MAX_SELENIUMS = maxSeleniums;
+    }
+  }
+});
+
+app.use((req, res) => {
+  // 404 handler for unmatched routes
+  res.status(404).send("Not found");
+});
+
+//EXPRESS STUFF
+// Body parser middleware for parsing request body
+app.use(bodyParser.json());
+
+// Example API endpoint
+app.get("/admin", (req, res) => {
+  ///send the players dict
+  res.json({
+    players: players,
+    seleniums: seleniums,
+    maxSeleniums: MAX_SELENIUMS,
+  });
+});
+
+app.post("/admin/setMaxSeleniums", (req, res) => {
+  //get max seleniums from body
+  var maxSeleniums = req.body.maxSeleniums;
+
+  console.log(typeof maxSeleniums);
+
+  if (maxSeleniums) {
+    console.log(typeof maxSeleniums);
+    //IF ITS  A NUMBER
+    if (typeof maxSeleniums == "number") {
+      console.log("I am setting max seleniums to " + maxSeleniums);
+      MAX_SELENIUMS = maxSeleniums;
+    }
+  }
+});
+
+app.use((req, res) => {
+  // 404 handler for unmatched routes
+  res.status(404).send("Not found");
 });
 
 function distance(x1, y1, x2, y2) {
@@ -220,6 +292,7 @@ function balanceSeleniums() {
   //get length of seleniums
   var seleniumCount = Object.keys(seleniums).length;
 
+  /// console.log("max seleniums is " + MAX_SELENIUMS);
   //if there are less than MAX_SELENIUMS, create a new selenium
 
   if (seleniumCount < MAX_SELENIUMS) {
@@ -878,11 +951,3 @@ wss.on("connection", (ws) => {
     }
   });
 });
-
-// Start the HTTP server on port 8080 (or any other port you prefer)
-server.listen(8080, () => {
-  console.log("HTTP Server started on " + server.address().port);
-});
-
-console.log("The WebSocket server is running on port ");
-console.log(wss.options.port);
