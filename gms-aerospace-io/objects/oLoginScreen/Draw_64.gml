@@ -68,7 +68,7 @@ if( string_length(keyboard_string)>13)
 	}
 global.username = keyboard_string
 draw_text_transformed(bw/2, bh*.35, "My name is...",sc*.9,sc*.9,0);
-draw_text_transformed(bw/2, bh*0.27, "Aerospace.io",sc*1.3,sc*1.3,0);
+draw_text_transformed(bw/2, bh*0.27, "StellarClash.io",sc*1.3,sc*1.3,0);
 	
 
 

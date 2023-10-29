@@ -2,19 +2,21 @@ var bw = browser_width;
 var bh = browser_height;
 var sc = bw/1300;
 if(!instance_exists(oPlayer) and room = Room_World){
-	draw_set_color(c_white);
-	draw_roundrect_ext(bw*0.3, bh*0.3, bw*0.7, bh*0.7, 80, 80, false);
+	if(deadFor>60){
+		draw_set_color(c_white);
+		draw_roundrect_ext(bw*0.3, bh*0.3, bw*0.7, bh*0.7, 80, 80, false);
 	
-	draw_set_color(c_black);
-	draw_set_font(fMenu80);
-	draw_set_halign(fa_center);
-	draw_set_valign(fa_center);
+		draw_set_color(c_black);
+		draw_set_font(fMenu80);
+		draw_set_halign(fa_center);
+		draw_set_valign(fa_center);
 	
-	draw_text_transformed(bw*0.5, bh*0.37, "Player Stats", 0.6*sc, 0.6*sc, 0);
+		draw_text_transformed(bw*0.5, bh*0.37, "Player Stats", 0.6*sc, 0.6*sc, 0);
 	
-	draw_text_transformed(bw*0.5, bh*0.48, "Kills : "+string(score), 0.5*sc, 0.5*sc, 0);
+		draw_text_transformed(bw*0.5, bh*0.48, "Score : "+string(score), 0.5*sc, 0.5*sc, 0);
 	
-	draw_text_transformed(bw*0.5, bh*0.58, "Player "+myKiller+" took you down!", 0.2*sc, 0.2*sc, 0);
+		draw_text_transformed(bw*0.5, bh*0.58, "Player "+myKiller+" took you down!", 0.2*sc, 0.2*sc, 0);
+	}
 	
 	if(deadFor>120){
 		draw_set_color(c_red);

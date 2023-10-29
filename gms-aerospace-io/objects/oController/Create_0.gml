@@ -1,4 +1,4 @@
-global.PRODUCTION = false
+global.PRODUCTION = true
 
 if(global.PRODUCTION){
 	socket = network_create_socket(network_socket_wss)
@@ -11,5 +11,6 @@ if(global.PRODUCTION){
 global.clientId = -1
 
 global.ping = -1
+window_set_cursor(cr_cross);
 
 alarm[0] = 10

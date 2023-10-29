@@ -8,6 +8,10 @@ const app = express();
 const server = createServer(app);
 const wss = new WebSocketServer({ server });
 
+server.listen(process.env.PORT || 3000, () => {
+  console.log("Server started on " + server.address().port);
+});
+
 // CORS configuration for allowing requests from your React frontend
 app.use(
   cors({
@@ -16,10 +20,6 @@ app.use(
       "*",
   })
 );
-
-server.listen(process.env.PORT || 3000, () => {
-  console.log("Server started on " + server.address().port);
-});
 
 var players = {};
 var bullets = {};
