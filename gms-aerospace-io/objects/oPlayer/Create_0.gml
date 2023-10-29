@@ -15,3 +15,6 @@ sprite_index = global.skins[global.skin];
  
  serverX = x
  serverY = y
+ 
+ recoil = 0
+maxRecoil = 100

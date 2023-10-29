@@ -152,6 +152,18 @@ if(type == network_type_data){
 		break;
 		
 		
+		
+		
+		case "recoil_state_update":
+		
+			if(instance_exists(oPlayer)){
+				oPlayer.recoil = realData.recoil;
+				oPlayer.maxRecoil = realData.maxRecoil
+			}
+		
+		break;
+		
+		
 	
 		
 		case "destroy_player":

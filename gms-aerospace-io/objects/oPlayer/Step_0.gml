@@ -4,12 +4,13 @@ direction = image_angle;
 
 
 // Calculate the scaled distance
-var scaled_distance = distance_to_point(mouse_x, mouse_y) * image_xscale;
+var scaled_distance = point_distance(x,y,mouse_x, mouse_y) //* image_xscale;
+
 
 
 
 // Check if the distance is within the annular region
-if (scaled_distance > inner_radius && scaled_distance < outer_radius)
+if (point_in_circle(mouse_x,mouse_y,x,y,outer_radius) and !point_in_circle(mouse_x,mouse_y,x,y,inner_radius))
 {
     // Map the distance to a value between 0 and 1
     normalized_value = (scaled_distance - inner_radius) / (outer_radius - inner_radius);
@@ -31,7 +32,10 @@ y = lerp(y, serverY, 0.3)
 image_xscale =1+0.1*score
 
 image_yscale = image_xscale
-outer_radius = min(browser_height, browser_width)/5
+
+
+outer_radius = max(view_hport[0], view_wport[0])/2
+inner_radius = min(view_hport[0], view_wport[0])/4.5//32*image_xscale
 
 //SHOOT
 if(mouse_check_button(mb_left)){

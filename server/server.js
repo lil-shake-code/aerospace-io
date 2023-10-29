@@ -203,7 +203,7 @@ function getShootingCharacteristics(level) {
   let bulletSpeed = Math.max(15 - level, 5);
 
   // Calculate recoil time using sine wave for oscillation
-  let recoilTime = 40 + 20 * Math.sin((level * Math.PI) / 10); // Oscillates between 20 and 60 over 10 levels
+  let recoilTime = 30 + 20 * Math.sin((level * Math.PI) / 10); // Oscillates between 20 and 60 over 10 levels
 
   // Calculate spread - the number of bullets fired in 1 trigger
   let spread = Math.min(1 + Math.floor(level / 2), 5);
@@ -855,6 +855,15 @@ wss.on("connection", (ws) => {
 
           //recoil
           player.recoil = player.shootingCharacteristics.recoilTime;
+
+          //tell this player about the recoil state
+          ws.send(
+            JSON.stringify({
+              eventName: "recoil_state_update",
+              recoil: player.recoil,
+              maxRecoil: player.shootingCharacteristics.recoilTime,
+            })
+          );
         }
         break;
 
