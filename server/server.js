@@ -290,7 +290,12 @@ function getShootingCharacteristics(level) {
 
 function balanceSeleniums() {
   //get length of seleniums
-  var seleniumCount = Object.keys(seleniums).length;
+  var seleniumCount = 0;
+  for (var i in seleniums) {
+    if (seleniums[i].value > 1) {
+      seleniumCount++;
+    }
+  }
 
   /// console.log("max seleniums is " + MAX_SELENIUMS);
   //if there are less than MAX_SELENIUMS, create a new selenium
