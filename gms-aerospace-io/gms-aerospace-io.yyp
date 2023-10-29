@@ -60,6 +60,7 @@
     {"id":{"name":"skin_psychedelic","path":"sprites/skin_psychedelic/skin_psychedelic.yy",},},
     {"id":{"name":"oLoginScreen","path":"objects/oLoginScreen/oLoginScreen.yy",},},
     {"id":{"name":"ftArial","path":"fonts/ftArial/ftArial.yy",},},
+    {"id":{"name":"soundBullet","path":"sounds/soundBullet/soundBullet.yy",},},
     {"id":{"name":"sSky","path":"sprites/sSky/sSky.yy",},},
     {"id":{"name":"skin_greenie","path":"sprites/skin_greenie/skin_greenie.yy",},},
     {"id":{"name":"fMenu80","path":"fonts/fMenu80/fMenu80.yy",},},

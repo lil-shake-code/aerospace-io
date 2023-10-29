@@ -147,6 +147,9 @@ if(type == network_type_data){
 			b.image_blend = make_color_hsv(irandom(255) , irandom(80),255)
 			b.image_xscale = realData.D/5
 			b.image_yscale = b.image_xscale
+			if(realData.fB==global.clientId){
+				var soundBu = audio_play_sound(soundBullet, 1, false)
+			}
 		
 		}
 		break;

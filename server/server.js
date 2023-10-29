@@ -795,6 +795,7 @@ function bulletStateUpdate() {
       y: bullet.y,
       A: bullet.A,
       D: bullet.damage,
+      fB: bullet.firedBy,
     };
 
     for (var j in players) {
