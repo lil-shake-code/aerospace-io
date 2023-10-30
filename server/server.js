@@ -28,7 +28,7 @@ var clientId = 0;
 var bulletId = 0;
 var seleniumId = 0;
 var MAX_BOTS = 7;
-var MAX_SELENIUMS = 100;
+var MAX_SELENIUMS = 50;
 var realPlayerCount = 0;
 
 const GAME_WIDTH = 3000;
@@ -273,7 +273,7 @@ function getShootingCharacteristics(level) {
 
   // Calculate bullet speed
 
-  let bulletSpeed = Math.max(15 / level, 4);
+  let bulletSpeed = Math.max(15 - level * 2, 4);
   if (level == 0) {
     bulletSpeed = 15;
   }

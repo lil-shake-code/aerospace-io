@@ -19,3 +19,4 @@ sprite_index = global.skins[global.skin];
  
  recoil = 0
 maxRecoil = 100
+oCamera.deadFor = 0
