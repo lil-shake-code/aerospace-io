@@ -111,7 +111,12 @@ if(type == network_type_data){
 			oPlayer.serverX = real(realData.x)
 			oPlayer.serverY = real(realData.y)
 			health = real(realData.H) 
-			score = real(realData.K) 
+			
+			
+			if(score!= real(realData.K)){
+				score = real(realData.K) 
+				var soundGoodclick = audio_play_sound(soundGoodClick,1,false)
+			}
 		}
 		with(oOtherPlayer){
 			if(clientId==real(realData.clientId)){

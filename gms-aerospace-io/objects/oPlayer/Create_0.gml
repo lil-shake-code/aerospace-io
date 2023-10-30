@@ -1,6 +1,7 @@
 
 health = 100;
 score=0;
+
 pflash = 0;
 
 

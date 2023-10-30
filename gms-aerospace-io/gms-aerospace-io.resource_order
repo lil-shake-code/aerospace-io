@@ -30,6 +30,7 @@
     {"name":"sBullet","order":2,"path":"sprites/sBullet/sBullet.yy",},
     {"name":"fMenu","order":2,"path":"fonts/fMenu/fMenu.yy",},
     {"name":"sLadder","order":4,"path":"sprites/sLadder/sLadder.yy",},
+    {"name":"soundGoodClick","order":1,"path":"sounds/soundGoodClick/soundGoodClick.yy",},
     {"name":"iogamesforum","order":8,"path":"sprites/iogamesforum/iogamesforum.yy",},
     {"name":"oOtherPlayer","order":8,"path":"objects/oOtherPlayer/oOtherPlayer.yy",},
     {"name":"sSampleTweeet","order":9,"path":"sprites/sSampleTweeet/sSampleTweeet.yy",},

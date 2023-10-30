@@ -48,6 +48,7 @@
     {"id":{"name":"sBullet","path":"sprites/sBullet/sBullet.yy",},},
     {"id":{"name":"fMenu","path":"fonts/fMenu/fMenu.yy",},},
     {"id":{"name":"sLadder","path":"sprites/sLadder/sLadder.yy",},},
+    {"id":{"name":"soundGoodClick","path":"sounds/soundGoodClick/soundGoodClick.yy",},},
     {"id":{"name":"iogamesforum","path":"sprites/iogamesforum/iogamesforum.yy",},},
     {"id":{"name":"shRed","path":"shaders/shRed/shRed.yy",},},
     {"id":{"name":"oOtherPlayer","path":"objects/oOtherPlayer/oOtherPlayer.yy",},},

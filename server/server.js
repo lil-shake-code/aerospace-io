@@ -321,7 +321,21 @@ function balanceSeleniums() {
       y: Math.random() * GAME_HEIGHT,
       value: Math.floor(Math.random() * 10) / 10 + 0.5,
       roomId: "public", ///SELENIUMS WILL ONLY EXIST in public room
+      lifetime: 0,
     };
+
+    for (var i in players) {
+      if (players[i].roomId == "public") {
+        if (players[i].health <= 0) {
+          continue;
+        }
+
+        if (checkBulletCollision(selenium, players[i])) {
+        }
+        continue;
+      }
+    }
+
     //add selenium to seleniums
     seleniums[selenium.seleniumId] = selenium;
 
@@ -378,7 +392,11 @@ function gameLoop() {
   for (var i in seleniums) {
     //check bullet collision but instead of bullet, use selenium
     var selenium = seleniums[i];
+    selenium.lifetime++;
 
+    if (selenium.lifetime < 20) {
+      continue;
+    }
     //check if selenium is colliding with player
     for (var j in players) {
       // console.log("checking selenium collision with player");
@@ -394,7 +412,7 @@ function gameLoop() {
         continue;
       }
       if (checkBulletCollision(selenium, player)) {
-        console.log("selenium collision");
+        // console.log("selenium collision");
         //delete selenium
         delete seleniums[i];
 
@@ -918,9 +936,9 @@ wss.on("connection", (ws) => {
           })
         );
 
-        //tell this player about all the seleniums
-        for (var i in selenium) {
-          var selenium = selenium[i];
+        //tell this player about all the existing seleniums
+        for (var i in seleniums) {
+          var selenium = seleniums[i];
 
           //check if same room
           if (selenium.roomId != player.roomId) {
