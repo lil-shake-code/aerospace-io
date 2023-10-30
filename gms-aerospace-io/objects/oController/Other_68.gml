@@ -1,8 +1,13 @@
 /// @description Async ws Events. Do Not Tamper!
 var type = async_load[? "type"]
 if(type == network_type_non_blocking_connect){
+	
+	
 	if( async_load[? "succeeded"] == false){
 		show_debug_message("failed non blocking connection. Please check your internet connection and firewalls.")
+		if(instance_exists(oPlayer)){
+		instance_destroy(oPlayer)
+	}
 	}
 	if( async_load[? "succeeded"] == true){
 		show_debug_message("Succeeded non blocking conection. ")
@@ -30,6 +35,7 @@ if(type == network_type_non_blocking_connect){
 	}
 	
 }
+
 if(type == network_type_data){
 	var buffer_raw = async_load[? "buffer"];
 	var buffer_processed = buffer_read(buffer_raw , buffer_text);
@@ -224,4 +230,11 @@ if(type == network_type_data){
 	
 	buffer_delete(buffer_raw)
 }
+	
+	
+	
+if(type == network_type_disconnect){
+	show_message("disconnected")
+}
+
 

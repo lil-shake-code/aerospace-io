@@ -269,22 +269,33 @@ function checkBulletCollision(bullet, player) {
 function getShootingCharacteristics(level) {
   var level = Math.floor(level);
   // Calculate damage
-  let damage = Math.min(5 + level, 20);
+  let damage = Math.min(3 + level / 2, 40);
 
   // Calculate bullet speed
-  let bulletSpeed = Math.max(15 - level, 5);
 
-  // Calculate recoil time using sine wave for oscillation
-  let recoilTime = 30 + 20 * Math.sin((level * Math.PI) / 10); // Oscillates between 20 and 60 over 10 levels
+  let bulletSpeed = Math.max(15 / level, 4);
+  if (level == 0) {
+    bulletSpeed = 15;
+  }
+
+  // Calculate recoil time
+  let recoilTime = Math.min(8 * level, 20);
+
+  if (level == 0) {
+    recoilTime = 8;
+  }
 
   // Calculate spread - the number of bullets fired in 1 trigger
-  let spread = Math.min(1 + Math.floor(level / 2), 5);
+  let spread = Math.min(1 + Math.floor(level / 3), 5);
+
+  let thrustSpeed = Math.max(10 - level, 2);
 
   return {
     damage: damage,
     bulletSpeed: bulletSpeed,
     recoilTime: recoilTime,
     spread: spread,
+    thrustSpeed: thrustSpeed,
   };
 }
 
@@ -292,7 +303,7 @@ function balanceSeleniums() {
   //get length of seleniums
   var seleniumCount = 0;
   for (var i in seleniums) {
-    if (seleniums[i].value > 1) {
+    if (seleniums[i].value > 0.5) {
       seleniumCount++;
     }
   }
@@ -308,7 +319,7 @@ function balanceSeleniums() {
       seleniumId: seleniumId++,
       x: Math.random() * GAME_WIDTH,
       y: Math.random() * GAME_HEIGHT,
-      value: Math.floor(Math.random() * 10) / 10 + 1,
+      value: Math.floor(Math.random() * 10) / 10 + 0.5,
       roomId: "public", ///SELENIUMS WILL ONLY EXIST in public room
     };
     //add selenium to seleniums
@@ -723,6 +734,8 @@ function createBots() {
     };
     player.shootingCharacteristics = getShootingCharacteristics(player.kills);
 
+    player.speed = player.shootingCharacteristics.thrustSpeed;
+
     players[player.clientId] = player;
 
     //tell other players we created this guy
@@ -853,6 +866,8 @@ wss.on("connection", (ws) => {
         };
 
         players[player.clientId] = player;
+
+        player.speed = player.shootingCharacteristics.thrustSpeed;
 
         //tell the player we created you
         ws.send(

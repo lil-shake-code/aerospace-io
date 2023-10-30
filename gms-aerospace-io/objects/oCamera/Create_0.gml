@@ -13,7 +13,7 @@ oldh= browser_height
 oldw = browser_width
 
 
-myKiller = ""
+myKiller = "??"
 
 deadFor = 0
 
