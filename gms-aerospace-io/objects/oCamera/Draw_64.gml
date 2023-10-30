@@ -28,7 +28,7 @@ if(!instance_exists(oPlayer) and room = Room_World){
 	
 	if(mouse_check_button_pressed(mb_left) and deadFor>120){
 		
-	
+		network_destroy(oController.socket)
 		room_restart();
 		
 		view_wport[0] = 1080*sc;

@@ -28,7 +28,7 @@ var clientId = 0;
 var bulletId = 0;
 var seleniumId = 0;
 var MAX_BOTS = 7;
-var MAX_SELENIUMS = 50;
+var MAX_SELENIUMS = 30;
 var realPlayerCount = 0;
 
 const GAME_WIDTH = 3000;
