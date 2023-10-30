@@ -27,6 +27,8 @@ if(!instance_exists(oPlayer) and room = Room_World){
 	deadFor++;
 	
 	if(mouse_check_button_pressed(mb_left) and deadFor>120){
+		
+	
 		room_restart();
 		
 		view_wport[0] = 1080*sc;

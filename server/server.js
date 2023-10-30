@@ -388,6 +388,11 @@ function gameLoop() {
         console.log("not same room of selenium and player");
         continue;
       }
+      //check if player health is more than 0
+      if (player.health <= 0) {
+        // console.log("player health is less than 0");
+        continue;
+      }
       if (checkBulletCollision(selenium, player)) {
         console.log("selenium collision");
         //delete selenium
@@ -421,10 +426,15 @@ function gameLoop() {
   //update players
 
   if (realPlayerCount == 0) {
+    //no real players at all
     return;
   }
   for (var i in players) {
     var player = players[i];
+
+    if (player.health <= 0) {
+      continue;
+    }
 
     //reduce recoil
     if (player.recoil > 0) {
@@ -432,7 +442,7 @@ function gameLoop() {
     }
 
     //health regeneration
-    if (player.health < 100) {
+    if (player.health < 100 && player.health > 0) {
       if (Date.now() - player.lastHitTime > 10000) {
         player.health += 0.2;
       }
@@ -456,6 +466,12 @@ function gameLoop() {
         if (otherPlayer.roomId != player.roomId) {
           continue;
         }
+
+        //if health is 0, skip this player
+        if (otherPlayer.health <= 0) {
+          continue;
+        }
+
         if (otherPlayer.clientId != player.clientId) {
           var d = distance(player.x, player.y, otherPlayer.x, otherPlayer.y);
           if (d < closestDistance) {
@@ -488,6 +504,7 @@ function gameLoop() {
                 firedBy: player.clientId,
                 roomId: player.roomId,
                 lifetime: 120,
+                username: player.username,
               };
               bullets[bulletId++] = bullet;
             }
@@ -582,9 +599,20 @@ function gameLoop() {
       if (player.roomId != bullet.roomId) {
         continue;
       }
+
+      ///health
+      if (player.health <= 0) {
+        continue;
+      }
       if (bullet.firedBy != player.clientId) {
         if (checkBulletCollision(bullet, player)) {
           delete bullets[i];
+
+          var killerName = "";
+
+          if (bullet.username) {
+            killerName = bullet.username;
+          }
 
           //tell players to delete this bullet
           var sendThis = {
@@ -614,6 +642,7 @@ function gameLoop() {
             var sendThis = {
               eventName: "destroy_player",
               clientId: player.clientId,
+              killerName: killerName,
             };
 
             for (var k in players) {
@@ -661,8 +690,11 @@ function gameLoop() {
               }
             }
 
-            //remove player from players
-            delete players[player.clientId];
+            //remove player from players NO MORE BC WE WANT DEAD PLAYERS TO BE ABLE TO SEE THE GAME
+
+            if (players[player.clientId].bot) {
+              delete players[player.clientId];
+            }
 
             //find the player who fired the bullet and add 1 to kills
             try {
@@ -696,7 +728,9 @@ function createBots() {
     if (player.bot) {
       botCount++;
     } else {
-      realPlayerCount++;
+      if (player.health > 0) {
+        realPlayerCount++;
+      }
     }
   }
 
@@ -772,6 +806,10 @@ setInterval(createBots, 1000);
 function globalStateUpdate() {
   for (var i in players) {
     var player = players[i];
+
+    if (player.health <= 0) {
+      continue;
+    }
     var sendThis = {
       eventName: "global_state_update",
       clientId: player.clientId,
@@ -936,6 +974,11 @@ wss.on("connection", (ws) => {
             continue;
           }
 
+          //health check
+          if (otherPlayer.health <= 0) {
+            continue;
+          }
+
           if (otherPlayer.clientId != player.clientId) {
             ws.send(
               JSON.stringify({
@@ -969,6 +1012,11 @@ wss.on("connection", (ws) => {
             break;
           }
 
+          //if player health
+          if (player.health <= 0) {
+            break;
+          }
+
           //repeat x times
           for (var i = 0; i < player.shootingCharacteristics.spread; i++) {
             var bullet = {
@@ -980,6 +1028,7 @@ wss.on("connection", (ws) => {
               firedBy: player.clientId,
               roomId: player.roomId,
               lifetime: 120,
+              username: player.username,
             };
             bullets[bulletId++] = bullet;
           }

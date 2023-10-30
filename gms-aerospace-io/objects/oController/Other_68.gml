@@ -153,7 +153,7 @@ if(type == network_type_data){
 			b.image_blend = make_color_hsv(irandom(255) , irandom(80),255)
 			b.image_xscale = realData.D/5
 			b.image_yscale = b.image_xscale
-			if(realData.fB==global.clientId){
+			if(realData.fB==global.clientId and instance_exists(oPlayer)){
 				var soundBu = audio_play_sound(soundBullet, 1, false)
 			}
 		
@@ -179,6 +179,9 @@ if(type == network_type_data){
 		//show_message(buffer_processed)
 		if(global.clientId == realData.clientId){
 			instance_destroy(oPlayer)
+			
+			//find your killers name...
+			oCamera.myKiller = realData.killerName
 			
 		}else{
 			with(oOtherPlayer){
