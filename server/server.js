@@ -1075,4 +1075,34 @@ wss.on("connection", (ws) => {
         break;
     }
   });
+
+  //ws on close
+  ws.on("close", () => {
+    //go to players and check if there is a player with this ws and remove it if health is 0
+
+    for (var i in players) {
+      var player = players[i];
+
+      if (player.ws == ws) {
+        //if health is 0, remove this player
+        if (player.health <= 0) {
+          delete players[i];
+
+          //tell other players to remove this player
+          var sendThis = {
+            eventName: "destroy_player",
+            clientId: player.clientId,
+          };
+
+          for (var j in players) {
+            var otherPlayer = players[j];
+
+            if (otherPlayer.ws) {
+              otherPlayer.ws.send(JSON.stringify(sendThis));
+            }
+          }
+        }
+      }
+    }
+  });
 });
