@@ -268,6 +268,10 @@ function checkBulletCollision(bullet, player) {
 }
 function getShootingCharacteristics(level) {
   var level = Math.floor(level);
+
+  //Calculate player max health
+  let maxHealth = 100 + level * 10;
+
   // Calculate damage
   let damage = Math.min(3 + level / 2, 40);
 
@@ -296,6 +300,7 @@ function getShootingCharacteristics(level) {
     recoilTime: recoilTime,
     spread: spread,
     thrustSpeed: thrustSpeed,
+    maxHealth: maxHealth,
   };
 }
 
@@ -460,7 +465,7 @@ function gameLoop() {
     }
 
     //health regeneration
-    if (player.health < 100 && player.health > 0) {
+    if (player.health < player.maxHealth && player.health > 0) {
       if (Date.now() - player.lastHitTime > 10000) {
         player.health += 0.2;
       }
@@ -533,11 +538,15 @@ function gameLoop() {
           }
         } else {
           //just make the bot move in the direction of the player 5 pixels
-          player.x += (dx / closestDistance) * player.speed * 0.2;
-          player.y += (dy / closestDistance) * player.speed * 0.2;
+          var fakeN = 0.2 + Math.random() / 2;
+          player.x += (dx / closestDistance) * player.speed * fakeN;
+          player.y += (dy / closestDistance) * player.speed * fakeN;
 
           //rotate the bot to face the player
-          player.A = Math.atan2(-dy, dx) * (180 / Math.PI);
+          var newA =
+            Math.atan2(-dy, dx) * (180 / Math.PI) + 5 * Math.random() - 2.5;
+          //lerp player.A to newA
+          player.A = (player.A + newA) / 2;
         }
         //check if player is out of bounds
         var correctedPosition = outOfBounds(player.x, player.y);
@@ -680,7 +689,7 @@ function gameLoop() {
                 x: player.x + Math.random() * 60 - 30,
                 y: player.y + Math.random() * 60 - 30,
                 value: player.kills / 7,
-                roomId: player.roomId, ///SELENIUMS WILL ONLY EXIST in public room
+                roomId: player.roomId,
               };
               //add selenium to seleniums
               seleniums[selenium.seleniumId] = selenium;
@@ -772,6 +781,7 @@ function createBots() {
       N: 0,
       speed: 10,
       health: 100,
+      maxHealth: 100,
       kills: Math.floor(Math.random() * 4),
       roomId: "public", ///BOTS WILL ONLY EXIST in public room
       username: botName,
@@ -787,6 +797,7 @@ function createBots() {
     player.shootingCharacteristics = getShootingCharacteristics(player.kills);
 
     player.speed = player.shootingCharacteristics.thrustSpeed;
+    player.maxHealth = player.shootingCharacteristics.maxHealth;
 
     players[player.clientId] = player;
 
@@ -835,6 +846,7 @@ function globalStateUpdate() {
       y: player.y,
       A: player.A,
       H: player.health,
+      mH: player.maxHealth,
       K: player.kills,
     };
 
@@ -910,6 +922,7 @@ wss.on("connection", (ws) => {
           N: 0,
           speed: 10,
           health: 100,
+          maxHealth: 100,
           kills: 0,
           roomId: realData.roomId,
           username: realData.username,
@@ -924,6 +937,7 @@ wss.on("connection", (ws) => {
         players[player.clientId] = player;
 
         player.speed = player.shootingCharacteristics.thrustSpeed;
+        player.maxHealth = player.shootingCharacteristics.maxHealth;
 
         //tell the player we created you
         ws.send(

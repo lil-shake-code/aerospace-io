@@ -4,6 +4,7 @@ serverY = 0
 
 
 enemyHealth = 100
+enemyMaxHealth = 100
 enemyUsername = ""
 enemyKills = 0
 

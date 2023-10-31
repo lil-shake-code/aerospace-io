@@ -22,7 +22,7 @@ var xleft = oPlayer.x-15 ;
 var xright = oPlayer.x+15
 var ytop = oPlayer.y-22 ; 
 var ybottom = oPlayer.y-22+2 +score*0.5
-draw_healthbar(xleft - score, ytop, xright+ score, ybottom, health, c_black, c_red, c_lime, 0, true, true);
+draw_healthbar(xleft - maxHealth/10, ytop, xright+ maxHealth/10, ybottom, 100*health/maxHealth, c_black, c_red, c_lime, 0, true, true);
 
 //recoil bar
 recoil--;

@@ -111,6 +111,7 @@ if(type == network_type_data){
 			oPlayer.serverX = real(realData.x)
 			oPlayer.serverY = real(realData.y)
 			health = real(realData.H) 
+			maxHealth = real(realData.mH)
 			
 			
 			if(score!= real(realData.K)){
@@ -126,6 +127,7 @@ if(type == network_type_data){
 			
 				image_angle = realData.A
 				enemyHealth = real(realData.H) 
+				maxHealth = real(realData.mH)
 				enemyKills = real(realData.K)  
 				
 	
