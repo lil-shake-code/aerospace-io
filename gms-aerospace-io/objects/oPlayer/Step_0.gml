@@ -67,6 +67,7 @@ var tailLength = map(speedFactor, minSpeed, maxSpeed, minTailLength, maxTailLeng
 // Emission rate based on speed
 var emissionRate = lerp(minEmissionRate, maxEmissionRate, tailLength / maxTailLength);
 
+
 // Now emit particles if the emitter exists
 if (instance_exists(oParticleSystem) && instance_exists(thrustEmitter)) {
     // Set emitter region based on player's position and direction

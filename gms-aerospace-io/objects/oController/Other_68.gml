@@ -193,6 +193,8 @@ if(type == network_type_data){
 		}else{
 			with(oOtherPlayer){
 				if(clientId==real(realData.clientId)){
+					part_emitter_clear(oParticleSystem.partSystem, thrustEmitter)
+				part_emitter_destroy(oParticleSystem.partSystem, thrustEmitter);
 					instance_destroy(id);
 				
 				}
@@ -219,6 +221,7 @@ if(type == network_type_data){
 		case "destroy_selenium":
 		with(oSelenium){
 			if(seleniumId== realData.seleniumId){
+			
 				instance_destroy(id)
 			}
 		}

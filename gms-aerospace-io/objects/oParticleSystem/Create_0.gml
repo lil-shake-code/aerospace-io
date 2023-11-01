@@ -33,11 +33,11 @@ part_type_blend(partSeleniumShine, true);
 
 partFireThrust = part_type_create();
 part_type_shape(partFireThrust, pt_shape_smoke); // Or another appropriate shape
-part_type_size(partFireThrust, 0.2, 0.3, -0.01, 0); // Larger size, with a slight decrease over time
-part_type_colour2(partFireThrust, c_blue,c_teal); // Orange fire color
-part_type_alpha2(partFireThrust, 0.8, 0); // Starts semi-transparent and fades out
-part_type_speed(partFireThrust, 0.4, 0.8, 0, 0); // Increased speed
+part_type_size(partFireThrust, 0.3, 0.5, -0.01, 0); // Larger size, with a slight decrease over time
+part_type_colour2(partFireThrust, c_yellow, c_red); // Orange fire color
+part_type_alpha2(partFireThrust, 0.6, 0); // Starts semi-transparent and fades out
+part_type_speed(partFireThrust, 0.9, 1.4, 0, 0); // Increased speed
 part_type_direction(partFireThrust, 180, 180, 0, 0); // Adjust if necessary
-part_type_life(partFireThrust, 3, 7); // Longer life for a more extended trail
+part_type_life(partFireThrust, 7, 14); // Longer life for a more extended trail
 part_type_blend(partFireThrust, true); // Keep the glow effect
 // Adjust other properties as needed...

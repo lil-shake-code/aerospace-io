@@ -29,6 +29,6 @@ minTailLength = 0;
 maxTailLength = 2; 
 
 // Minimum emission rate of particles (particles per step)
-minEmissionRate = 20; 
+minEmissionRate = 5; 
 // Maximum emission rate of particles (particles per step)
 maxEmissionRate = 50; 
