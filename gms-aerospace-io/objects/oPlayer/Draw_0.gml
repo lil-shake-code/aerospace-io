@@ -2,10 +2,26 @@
 {
 	pflash--;
 	shader_set(shWhite);
-	draw_self();
-	//shader_reset();
+	// Draw event of the main object
 	
-} else shader_reset(); draw_self();
+	draw_self()
+	
+} else{ shader_reset(); 
+	
+	
+	// Draw event of the main object
+
+
+
+	draw_self(); // Draw the main sprite
+	
+	
+	
+	
+	
+	
+	
+}
 if(old_health>health)
 {
 	old_health = health;

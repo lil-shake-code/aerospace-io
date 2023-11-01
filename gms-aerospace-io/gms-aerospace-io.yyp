@@ -51,6 +51,7 @@
     {"id":{"name":"soundGoodClick","path":"sounds/soundGoodClick/soundGoodClick.yy",},},
     {"id":{"name":"iogamesforum","path":"sprites/iogamesforum/iogamesforum.yy",},},
     {"id":{"name":"shRed","path":"shaders/shRed/shRed.yy",},},
+    {"id":{"name":"map","path":"scripts/map/map.yy",},},
     {"id":{"name":"oOtherPlayer","path":"objects/oOtherPlayer/oOtherPlayer.yy",},},
     {"id":{"name":"sSampleTweeet","path":"sprites/sSampleTweeet/sSampleTweeet.yy",},},
     {"id":{"name":"Room_World","path":"rooms/Room_World/Room_World.yy",},},

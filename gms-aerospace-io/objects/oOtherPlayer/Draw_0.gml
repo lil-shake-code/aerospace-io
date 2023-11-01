@@ -11,7 +11,11 @@ if(old_health>enemyHealth)
 	old_health = enemyHealth;
 	pflash = 7;
 }
-draw_self()
+
+// Draw event of the main object
+draw_self(); // Draw the main sprite
+
+
 
 
 // Setting the color, font, and alignment for the text

@@ -292,7 +292,7 @@ function getShootingCharacteristics(level) {
   // Calculate spread - the number of bullets fired in 1 trigger
   let spread = Math.min(1 + Math.floor(level / 3), 5);
 
-  let thrustSpeed = Math.max(10 - level, 2);
+  let thrustSpeed = Math.max(8 - level, 2);
 
   return {
     damage: damage,
@@ -533,12 +533,12 @@ function gameLoop() {
             }
 
             //recoil
-            player.bot.recoil = player.shootingCharacteristics.recoilTime;
-            player.recoil = player.shootingCharacteristics.recoilTime;
+            player.bot.recoil = player.shootingCharacteristics.recoilTime * 2;
+            player.recoil = player.shootingCharacteristics.recoilTime * 2;
           }
         } else {
           //just make the bot move in the direction of the player 5 pixels
-          var fakeN = 0.2 + Math.random() / 2;
+          var fakeN = 0.2 + Math.abs(Math.sin(player.kills)) / 3;
           player.x += (dx / closestDistance) * player.speed * fakeN;
           player.y += (dy / closestDistance) * player.speed * fakeN;
 
@@ -761,7 +761,7 @@ function createBots() {
     }
   }
 
-  if (botCount < MAX_BOTS) {
+  if (botCount < MAX_BOTS && realPlayerCount < MAX_BOTS) {
     console.log("creating a new bot");
     var spawnPoint = bestSpawnPoint(players, spawnPoints, "public");
     //for the name of the bot, 30% chance use the name from the list, 70% chance use empty string

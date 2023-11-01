@@ -24,3 +24,18 @@ part_type_direction(partSeleniumShine, 0, 360, -10, 10);  // Random direction wi
 part_type_gravity(partSeleniumShine, 0, 0);  
 part_type_life(partSeleniumShine, 15, 30); 
 part_type_blend(partSeleniumShine, true); 
+
+
+
+
+
+partFireThrust = part_type_create();
+part_type_shape(partFireThrust, pt_shape_smoke); // Choose a shape that looks more like a thin thrust
+part_type_size(partFireThrust, 0.05, 0.2, 0, 0); // Smaller size
+part_type_colour1(partFireThrust, make_color_rgb(255, 150, 0)); // Fire color, adjust as needed
+part_type_alpha2(partFireThrust, 1, 0); // Start visible and fade out to zero
+part_type_speed(partFireThrust, 0.3, 0.6, 0, 0); // Slower and thinner
+part_type_direction(partFireThrust, 180, 180, 0, 0); // Adjust if necessary
+part_type_life(partFireThrust, 5, 10); // Shorter life for a shorter trail
+part_type_blend(partFireThrust, true); // For a nice glow
+// Add more properties as needed...

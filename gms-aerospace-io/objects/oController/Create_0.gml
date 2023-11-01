@@ -1,4 +1,4 @@
-global.PRODUCTION = false
+global.PRODUCTION = true
 
 if(global.PRODUCTION){
 	socket = network_create_socket(network_socket_wss)

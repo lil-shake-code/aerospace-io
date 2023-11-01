@@ -137,7 +137,7 @@ if( room = Room_World){
 		sc*0.07,sc*0.07,0,c_white,0.5
 		)
 		draw_set_color(c_white)
-		draw_rectangle(bw-3000*sc*0.07, bh-3000*sc*0.07,bw-2,bh,true)
+		draw_rectangle(bw-3000*sc*0.07, bh-3000*sc*0.07,bw-5,bh-5,true)
 		
 		with(oOtherPlayer){
 			draw_sprite_ext(id.sprite_index,0,
