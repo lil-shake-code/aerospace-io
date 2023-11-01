@@ -5,6 +5,8 @@ score=0;
 
 pflash = 0;
 
+depth=0
+
 
 old_health = health;
 sprite_index = global.skins[global.skin];
@@ -37,9 +39,9 @@ maxSpeed = 5;
 // Minimum length of the tail, when at minimum speed
 minTailLength = 0; 
 // Maximum length of the tail, when at maximum speed
-maxTailLength = 1; 
+maxTailLength = 2; 
 
 // Minimum emission rate of particles (particles per step)
-minEmissionRate = 5; 
+minEmissionRate = 20; 
 // Maximum emission rate of particles (particles per step)
-maxEmissionRate = 20; 
+maxEmissionRate = 50; 
