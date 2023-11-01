@@ -1,5 +1,6 @@
 
-_speed = lerp(_speed,point_distance(x,y,serverX,serverY)*10, 0.5)
+_speed = lerp(_speed,point_distance(x,y,serverX,serverY)*60, 0.5)
+maxSpeed = max(maxSpeed,_speed)
 
 x = lerp(x, serverX, 0.3)
 y = lerp(y, serverY, 0.3)
@@ -11,7 +12,7 @@ y = lerp(y, serverY, 0.3)
 image_xscale =1+0.1*enemyKills
 
 image_yscale = image_xscale
-
+maxTailLength = image_xscale
 
 
 // Assuming 'speed' is the current speed of the player and 'direction' is the facing direction

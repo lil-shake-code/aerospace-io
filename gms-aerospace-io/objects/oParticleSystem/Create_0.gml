@@ -17,14 +17,14 @@ part_type_blend(partBulletTrail, true);
 
 
 partSeleniumShine = part_type_create();
-part_type_shape(partSeleniumShine, pt_shape_spark);
-part_type_size(partSeleniumShine, 0.1, 0.5, 0.01, 0); 
-part_type_colour3(partSeleniumShine, c_red, c_green, c_blue);  // Transition from red to green to blue
-part_type_alpha3(partSeleniumShine, 1, 0.7, 0); 
-part_type_speed(partSeleniumShine, 0, 0.2, 0.2, 0.5);  // Randomized speed between 0 and 1, with variation
-part_type_direction(partSeleniumShine, 0, 360, -10, 10);  // Random direction with variation
+part_type_shape(partSeleniumShine, pt_shape_disk);
+part_type_size(partSeleniumShine, 0.1, 0.2, 0.01, 0); 
+part_type_colour2(partSeleniumShine,  c_green, c_blue);  // Transition from red to green to blue
+part_type_alpha3(partSeleniumShine, 0.9, 0.6, 0); 
+part_type_speed(partSeleniumShine, 0, 0.1, 0.1, 0);  // Randomized speed between 0 and 1, with variation
+part_type_direction(partSeleniumShine, 0, 360, -1, 10);  // Random direction with variation
 part_type_gravity(partSeleniumShine, 0, 0);  
-part_type_life(partSeleniumShine, 15, 30); 
+part_type_life(partSeleniumShine, 20, 40); 
 part_type_blend(partSeleniumShine, true); 
 
 

@@ -59,6 +59,7 @@ if(mouse_check_button(mb_left)){
 
 
 maxSpeed = max(speed, maxSpeed)
+maxTailLength = image_xscale
 // Assuming 'speed' is the current speed of the player and 'direction' is the facing direction
 var speedFactor = lengthdir_x(speed, image_angle); // This extracts the horizontal speed component
 var tailLength = map(speedFactor, minSpeed, maxSpeed, minTailLength, maxTailLength); // Tail length based on speed

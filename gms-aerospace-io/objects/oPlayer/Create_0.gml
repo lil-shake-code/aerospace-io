@@ -39,9 +39,9 @@ maxSpeed = 5;
 // Minimum length of the tail, when at minimum speed
 minTailLength = 0; 
 // Maximum length of the tail, when at maximum speed
-maxTailLength = 2; 
+maxTailLength = 1; 
 
 // Minimum emission rate of particles (particles per step)
-minEmissionRate = 20; 
+minEmissionRate = 15; 
 // Maximum emission rate of particles (particles per step)
-maxEmissionRate = 50; 
+maxEmissionRate = 30; 
