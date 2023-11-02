@@ -31,6 +31,9 @@ if(room = Room_World){
     // Update the object position with the clamped values
     x = desiredX;
     y = desiredY;
+	
+	audio_listener_position(x,y,0)
+	
 
     //setting the camera to this objects x and y
     camera_set_view_pos(cam, x-view_w_half, y-view_h_half);

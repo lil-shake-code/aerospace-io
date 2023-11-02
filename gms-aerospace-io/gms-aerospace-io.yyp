@@ -67,6 +67,7 @@
     {"id":{"name":"skin_greenie","path":"sprites/skin_greenie/skin_greenie.yy",},},
     {"id":{"name":"fMenu80","path":"fonts/fMenu80/fMenu80.yy",},},
     {"id":{"name":"oCamera","path":"objects/oCamera/oCamera.yy",},},
+    {"id":{"name":"soundEngine","path":"sounds/soundEngine/soundEngine.yy",},},
     {"id":{"name":"shWhite","path":"shaders/shWhite/shWhite.yy",},},
     {"id":{"name":"oClosestArrow","path":"objects/oClosestArrow/oClosestArrow.yy",},},
     {"id":{"name":"sClosestArrow","path":"sprites/sClosestArrow/sClosestArrow.yy",},},

@@ -18,6 +18,6 @@
   "preload": false,
   "sampleRate": 44100,
   "soundFile": "soundGoodClick.wav",
-  "type": 0,
+  "type": 2,
   "volume": 0.14,
 }

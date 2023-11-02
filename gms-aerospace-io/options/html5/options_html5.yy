@@ -29,5 +29,5 @@
   "option_html5_usebuiltinparticles": true,
   "option_html5_usesplash": false,
   "option_html5_version": "1.0.0.0",
-  "option_html5_webgl": 2,
+  "option_html5_webgl": 1,
 }

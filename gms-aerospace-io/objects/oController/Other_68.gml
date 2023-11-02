@@ -163,6 +163,36 @@ if(type == network_type_data){
 			if(realData.fB==global.clientId and instance_exists(oPlayer)){
 				var soundBu = audio_play_sound(soundBullet, 1, false)
 			}
+			if(realData.fB!=global.clientId){
+				
+				// Calculate the distance between the camera and the bullet
+var distance = point_distance(oCamera.x, oCamera.y, b.x, b.y);
+
+// Define the maximum distance at which the sound should be audible and the volume range
+var half_volume_distance = 300; // The distance at which the volume will be half
+var max_distance = 2000; // The distance at which the sound will be nearly inaudible
+var min_volume = 0;     // Minimum volume at max distance
+var max_volume = 1;     // Maximum volume at zero distance
+
+// Calculate the volume based on the distance with an exponential falloff
+var volume;
+if (distance >= max_distance) {
+    volume = min_volume; // The sound is too far away to be heard
+} else {
+    // Using an exponential decay function for volume falloff
+    var factor = ln(0.5)/half_volume_distance // Calculate the decay factor based on half-volume distance
+    volume = max_volume * exp(factor * distance);
+}
+
+// Clamp the volume to make sure it's within the 0-1 range
+volume = clamp(volume, min_volume, max_volume);
+
+// Play the sound and set its initial gain
+var sound_id = audio_play_sound(soundBullet, 100, false); // 100 is the priority
+audio_sound_gain(sound_id, volume, 0); // Immediately set the volume based on the calculated distance
+
+			
+			}
 		
 		}
 		break;
