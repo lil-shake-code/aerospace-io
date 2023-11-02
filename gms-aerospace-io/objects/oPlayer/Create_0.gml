@@ -45,3 +45,7 @@ maxTailLength = 1;
 minEmissionRate = 5; 
 // Maximum emission rate of particles (particles per step)
 maxEmissionRate = 30; 
+
+
+
+thrustSound = audio_play_sound(soundEngine,1,true)

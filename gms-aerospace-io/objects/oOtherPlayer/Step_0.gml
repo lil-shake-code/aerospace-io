@@ -35,3 +35,31 @@ if (instance_exists(oParticleSystem) ) {
     // Emit particles
     part_emitter_stream(oParticleSystem.partSystem, thrustEmitter, oParticleSystem.partFireThrust, emissionRate);
 }
+
+
+
+
+// Calculate the distance from the camera to this plane
+var distance = point_distance(oCamera.x, oCamera.y, x, y);
+
+// Define the maximum distance at which the sound should be audible and the volume range
+var half_volume_distance = 300; // The distance at which the volume will be half
+var max_distance = 2000;        // The distance at which the sound will be nearly inaudible
+var min_volume = 0;             // Minimum volume at max distance
+var max_volume = tailLength;        // Maximum volume is controlled by this.N
+
+// Calculate the volume based on the distance with an exponential falloff
+var volume;
+if (distance >= max_distance) {
+    volume = min_volume; // The sound is too far away to be heard
+} else {
+    // Using an exponential decay function for volume falloff
+    var factor = ln(0.5) / half_volume_distance; // Calculate the decay factor based on half-volume distance
+    volume = max_volume * exp(factor * distance);
+}
+
+// Clamp the volume to make sure it's within the 0-1 range
+volume = clamp(volume, min_volume, max_volume);
+
+// Set the gain of the engine sound based on the calculated volume
+audio_sound_gain(thrustSound, volume, 0);

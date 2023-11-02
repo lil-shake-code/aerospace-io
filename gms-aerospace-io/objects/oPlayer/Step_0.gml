@@ -77,3 +77,6 @@ if (instance_exists(oParticleSystem) && instance_exists(thrustEmitter)) {
     // Emit particles
     part_emitter_stream(oParticleSystem.partSystem, thrustEmitter, oParticleSystem.partFireThrust, emissionRate);
 }
+
+
+audio_sound_gain(thrustSound, normalized_value,0)
