@@ -9,6 +9,7 @@
         <text y=%22.90em%22 font-size=%2290%22>✈️</text></svg>"
     />
     <!-- Google tag (gtag.js) -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
     <script
       async
       src="https://www.googletagmanager.com/gtag/js?id=G-E5PDK9RXXV"
@@ -20,8 +21,15 @@
       }
       gtag("js", new Date());
 
-      gtag("config", "G-E5PDK9RXXV");
+      // Enable autoLinker for cross-domain tracking
+      gtag("config", "G-E5PDK9RXXV", {
+        linker: {
+          accept_incoming: true,
+          domains: ["*"],
+        },
+      });
     </script>
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta
@@ -131,7 +139,7 @@
     <!-- Run the game code -->
     <script
       type="text/javascript"
-      src="html5game/gms-aerospace-io.js?cachebust=1523047259"
+      src="html5game/gms-aerospace-io.js?cachebust=309532163"
     ></script>
 
     <!-- Builtin injector for injecting runner path -->
