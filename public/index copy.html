@@ -22,11 +22,9 @@
       gtag("js", new Date());
 
       // Enable autoLinker for cross-domain tracking
+
       gtag("config", "G-E5PDK9RXXV", {
-        linker: {
-          accept_incoming: true,
-          domains: ["*"],
-        },
+        cookie_flags: "secure;samesite=none",
       });
     </script>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
