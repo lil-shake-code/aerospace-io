@@ -21,6 +21,9 @@ if(mouse_check_button_pressed(mb_left)){
 		room_goto(Room_World)
 		
 		
+		
+		
+		
 		view_wport[0] = 1080*sc;
 		view_hport[0] = view_wport[0]*bh/bw;
 		camera_set_view_size(view_camera[0], view_wport[0], view_hport[0]);
@@ -39,6 +42,8 @@ if(mouse_check_button_pressed(mb_left)){
 		
 		global.roomId = get_string("Tell the name of the room you want to join or create","public")
 		room_goto(Room_World)
+		
+		
 		
 		
 		view_wport[0] = 1080*sc;
@@ -132,4 +137,29 @@ bh*0.55 + y2/2*sc*0.07,
 	
 }
 
+
+
+
+///Google Log in
+
+draw_sprite_ext(signInGoogle,0,bw*0.8, bh*0.25 , sc*0.7,0.7*sc,0,c_white,1) //
+var x1 = 586
+
+var y1 = 138
+draw_rectangle(bw*0.8 - x1/2*sc*0.7 , 
+bh*0.25 - y1/2*sc*0.7,
+bw*0.8 + x1/2*sc*0.7 , 
+bh*0.25 + y1/2*sc*0.7,true)
+if(point_in_rectangle(mx,my,
+bw*0.8 - x1/2*sc*0.7 , 
+bh*0.25 - y1/2*sc*0.7,
+bw*0.8 + x1/2*sc*0.7 , 
+bh*0.25 + y1/2*sc*0.7,
+) and mouse_check_button_pressed(mb_left)){
+	
+	loginWithGoogle()
+
+
+	
+}
 

@@ -31,6 +31,24 @@ if(!instance_exists(oPlayer) and room = Room_World){
 		network_destroy(oController.socket)
 		room_restart();
 		
+		//code to join server
+			var Buffer = buffer_create(1, buffer_grow, 1)
+			//WHAT DATA 
+			var data = ds_map_create();
+			//whatever data you want to send as key value pairs
+
+			ds_map_add(data,"eventName","create_me");
+			ds_map_add(data, "username", global.username)
+			ds_map_add(data, "skin", global.skin)
+			
+			ds_map_add(data, "roomId", global.roomId)
+			buffer_write(Buffer, buffer_text, json_encode(data))
+			network_send_raw(oController.socket, Buffer, buffer_tell(Buffer),network_send_text)
+			buffer_delete(Buffer)
+			ds_map_destroy(data)
+		
+		
+		
 		view_wport[0] = 1080*sc;
 		view_hport[0] = view_wport[0]*bh/bw;
 		camera_set_view_size(view_camera[0], view_wport[0], view_hport[0]);

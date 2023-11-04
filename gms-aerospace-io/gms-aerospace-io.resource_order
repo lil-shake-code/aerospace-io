@@ -28,6 +28,7 @@
     {"name":"font_usernames","order":3,"path":"fonts/font_usernames/font_usernames.yy",},
     {"name":"oSelenium","order":10,"path":"objects/oSelenium/oSelenium.yy",},
     {"name":"sBullet","order":2,"path":"sprites/sBullet/sBullet.yy",},
+    {"name":"signInGoogle","order":11,"path":"sprites/signInGoogle/signInGoogle.yy",},
     {"name":"fMenu","order":2,"path":"fonts/fMenu/fMenu.yy",},
     {"name":"sLadder","order":4,"path":"sprites/sLadder/sLadder.yy",},
     {"name":"soundGoodClick","order":1,"path":"sounds/soundGoodClick/soundGoodClick.yy",},
@@ -48,6 +49,7 @@
     {"name":"shWhite","order":1,"path":"shaders/shWhite/shWhite.yy",},
     {"name":"oClosestArrow","order":3,"path":"objects/oClosestArrow/oClosestArrow.yy",},
     {"name":"sClosestArrow","order":3,"path":"sprites/sClosestArrow/sClosestArrow.yy",},
+    {"name":"loginWithGoogle","order":1,"path":"scripts/loginWithGoogle/loginWithGoogle.yy",},
     {"name":"skin_ifyouwanttolooklikeafool","order":5,"path":"sprites/skin_ifyouwanttolooklikeafool/skin_ifyouwanttolooklikeafool.yy",},
   ],
 }

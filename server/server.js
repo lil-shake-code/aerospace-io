@@ -134,7 +134,14 @@ const botNames = [
   "Jazz",
 ];
 var currentBotName = 0;
-
+//auth waiting
+class authWaiter {
+  constructor(ws, queueId) {
+    this.ws = ws;
+    this.queueId = queueId;
+  }
+}
+var authQueue = [];
 //EXPRESS STUFF
 // Body parser middleware for parsing request body
 app.use(bodyParser.json());
@@ -905,6 +912,97 @@ wss.on("connection", (ws) => {
     var realData = JSON.parse(message);
 
     switch (realData.eventName) {
+      case "admin_auth_push":
+        var uuid = realData.uuid;
+        var queueId = realData.queueId;
+        //check if this location has data on firebase rtdb
+
+        //check if this location has data on firebase rtdb without nesting, by specific search
+        // get a reference to the database location
+        const db1 = getDatabase();
+        var databaseRef = ref(db1);
+
+        // specify the UUID key to query
+
+        var userRef = child(databaseRef, "users/" + uuid);
+
+        // attach a listener to retrieve the user data
+        onValue(userRef, function (snapshot) {
+          var userData = snapshot.val();
+          console.log(userData);
+          //if this is null, then the user does not exist
+          if (userData == null) {
+            console.log("user does not exist");
+
+            set(ref(db, "users/" + uuid), {
+              username: "user",
+              selenium: 0,
+            });
+          }
+        });
+
+        //now do the login stuff under "authenticate_me"
+        //remove from queue first
+        var thisWS = null;
+        console.log("auth queue is");
+        console.log(authQueue);
+        for (let i in authQueue) {
+          if (authQueue[i].queueId == queueId) {
+            console.log("found the guy in the queue");
+            console.log(authQueue[i]);
+            thisWS = authQueue[i].ws;
+            authQueue.splice(i, 1);
+          }
+        }
+        if (thisWS == null) {
+          return;
+        }
+
+        clientId++;
+        console.log("some guy is trying to get authenticated");
+
+        var sendThis = {};
+        const dbRef = ref(getDatabase());
+        get(child(dbRef, `users/${uuid}`))
+          .then((snapshot) => {
+            if (snapshot.exists()) {
+              //(snapshot.val());
+
+              console.log("This guy is a legit user!!");
+
+              //get the username and selenium
+              var serverUsername = snapshot.val().username;
+              var serverSelenium = snapshot.val().selenium;
+
+              //TODO edit this to the player dict
+
+              //sending this to GMS CLient
+              player.socket.send(JSON.stringify(sendThis));
+            } else {
+              console.log("No data available");
+              //tell the player username does not exist
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+            //tell the player username does not exist
+            sendThis = {
+              eventName: "login_fail",
+              description: "Unexpected Error Occured.",
+            };
+
+            console.log(sendThis);
+          });
+
+        break;
+      case "authentication_queue":
+        console.log("someone is trying to get in the auth queue");
+        console.log(realData.queueId);
+        var newWaiter = new authWaiter(ws, realData.queueId);
+        authQueue.push(newWaiter);
+        console.log(authQueue);
+        break;
+
       case "create_me":
         if (!realData.roomId) {
           realData.roomId = "public";

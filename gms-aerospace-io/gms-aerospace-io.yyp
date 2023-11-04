@@ -46,6 +46,7 @@
     {"id":{"name":"font_usernames","path":"fonts/font_usernames/font_usernames.yy",},},
     {"id":{"name":"oSelenium","path":"objects/oSelenium/oSelenium.yy",},},
     {"id":{"name":"sBullet","path":"sprites/sBullet/sBullet.yy",},},
+    {"id":{"name":"signInGoogle","path":"sprites/signInGoogle/signInGoogle.yy",},},
     {"id":{"name":"fMenu","path":"fonts/fMenu/fMenu.yy",},},
     {"id":{"name":"sLadder","path":"sprites/sLadder/sLadder.yy",},},
     {"id":{"name":"soundGoodClick","path":"sounds/soundGoodClick/soundGoodClick.yy",},},
@@ -71,6 +72,7 @@
     {"id":{"name":"shWhite","path":"shaders/shWhite/shWhite.yy",},},
     {"id":{"name":"oClosestArrow","path":"objects/oClosestArrow/oClosestArrow.yy",},},
     {"id":{"name":"sClosestArrow","path":"sprites/sClosestArrow/sClosestArrow.yy",},},
+    {"id":{"name":"loginWithGoogle","path":"scripts/loginWithGoogle/loginWithGoogle.yy",},},
     {"id":{"name":"skin_ifyouwanttolooklikeafool","path":"sprites/skin_ifyouwanttolooklikeafool/skin_ifyouwanttolooklikeafool.yy",},},
   ],
   "RoomOrderNodes": [

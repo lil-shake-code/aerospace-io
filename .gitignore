@@ -71,3 +71,7 @@ functions/package-lock.json
 functions/package.json
 public/404.html
 
+functions/firebaseConfig.json
+functions/login.html
+functions/login.js
+functions/style.css

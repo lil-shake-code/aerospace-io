@@ -14,20 +14,23 @@ if(type == network_type_non_blocking_connect){
 		non_blocking_success_yet = true;
 		
 			//code to join server
-			var Buffer = buffer_create(1, buffer_grow, 1)
-			//WHAT DATA 
-			var data = ds_map_create();
-			//whatever data you want to send as key value pairs
+			if(room!= Room_Name){
+				var Buffer = buffer_create(1, buffer_grow, 1)
+				//WHAT DATA 
+				var data = ds_map_create();
+				//whatever data you want to send as key value pairs
 
-			ds_map_add(data,"eventName","create_me");
-			ds_map_add(data, "username", global.username)
-			ds_map_add(data, "skin", global.skin)
+				ds_map_add(data,"eventName","create_me");
+				ds_map_add(data, "username", global.username)
+				ds_map_add(data, "skin", global.skin)
 			
-			ds_map_add(data, "roomId", global.roomId)
-			buffer_write(Buffer, buffer_text, json_encode(data))
-			network_send_raw(oController.socket, Buffer, buffer_tell(Buffer),network_send_text)
-			buffer_delete(Buffer)
-			ds_map_destroy(data)
+				ds_map_add(data, "roomId", global.roomId)
+				buffer_write(Buffer, buffer_text, json_encode(data))
+				network_send_raw(oController.socket, Buffer, buffer_tell(Buffer),network_send_text)
+				buffer_delete(Buffer)
+				ds_map_destroy(data)
+			}
+			
 			
 			
 			
