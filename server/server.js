@@ -3,6 +3,25 @@ import { createServer } from "http";
 import { WebSocketServer } from "ws";
 import cors from "cors";
 import bodyParser from "body-parser";
+import { getDatabase, ref, set, onValue, get, child } from "firebase/database";
+
+//firebase admin init
+import { initializeApp } from "firebase/app";
+import { getAuth, signInWithCustomToken } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { getAnalytics } from "firebase/analytics";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyChg_UPZhxsf6uMXHNIXzDk-1b5qmodPBc",
+  authDomain: "stellarclash-io.firebaseapp.com",
+  projectId: "stellarclash-io",
+  storageBucket: "stellarclash-io.appspot.com",
+  messagingSenderId: "211010333586",
+  appId: "1:211010333586:web:f9f18ed1f6d16210d22f4b",
+  measurementId: "G-K4RE7HYH3M",
+};
+
+initializeApp(firebaseConfig);
 
 const app = express();
 const server = createServer(app);
@@ -934,65 +953,71 @@ wss.on("connection", (ws) => {
           if (userData == null) {
             console.log("user does not exist");
 
-            set(ref(db, "users/" + uuid), {
+            set(ref(db1, "users/" + uuid), {
               username: "user",
               selenium: 0,
             });
           }
-        });
 
-        //now do the login stuff under "authenticate_me"
-        //remove from queue first
-        var thisWS = null;
-        console.log("auth queue is");
-        console.log(authQueue);
-        for (let i in authQueue) {
-          if (authQueue[i].queueId == queueId) {
-            console.log("found the guy in the queue");
-            console.log(authQueue[i]);
-            thisWS = authQueue[i].ws;
-            authQueue.splice(i, 1);
-          }
-        }
-        if (thisWS == null) {
-          return;
-        }
-
-        clientId++;
-        console.log("some guy is trying to get authenticated");
-
-        var sendThis = {};
-        const dbRef = ref(getDatabase());
-        get(child(dbRef, `users/${uuid}`))
-          .then((snapshot) => {
-            if (snapshot.exists()) {
-              //(snapshot.val());
-
-              console.log("This guy is a legit user!!");
-
-              //get the username and selenium
-              var serverUsername = snapshot.val().username;
-              var serverSelenium = snapshot.val().selenium;
-
-              //TODO edit this to the player dict
-
-              //sending this to GMS CLient
-              player.socket.send(JSON.stringify(sendThis));
-            } else {
-              console.log("No data available");
-              //tell the player username does not exist
+          //now do the login stuff under "authenticate_me"
+          //remove from queue first
+          var thisWS = null;
+          console.log("auth queue is");
+          console.log(authQueue);
+          for (let i in authQueue) {
+            if (authQueue[i].queueId == queueId) {
+              console.log("found the guy in the queue");
+              console.log(authQueue[i]);
+              thisWS = authQueue[i].ws;
+              authQueue.splice(i, 1);
             }
-          })
-          .catch((error) => {
-            console.error(error);
-            //tell the player username does not exist
-            sendThis = {
-              eventName: "login_fail",
-              description: "Unexpected Error Occured.",
-            };
+          }
+          if (thisWS == null) {
+            return;
+          }
 
-            console.log(sendThis);
-          });
+          clientId++;
+          console.log("some guy is trying to get authenticated");
+
+          var sendThis = {};
+          const dbRef = ref(getDatabase());
+          get(child(dbRef, `users/${uuid}`))
+            .then((snapshot) => {
+              if (snapshot.exists()) {
+                //(snapshot.val());
+
+                console.log("This guy is a legit user!!");
+
+                //get the username and selenium
+                var serverUsername = snapshot.val().username;
+                var serverSelenium = snapshot.val().selenium;
+
+                //TODO edit this to the player dict
+
+                var sendThis = {
+                  eventName: "authenticated",
+                  username: serverUsername,
+                  selenium: serverSelenium,
+                };
+
+                //sending this to GMS CLient
+                thisWS.send(JSON.stringify(sendThis));
+              } else {
+                console.log("No data available");
+                //tell the player username does not exist
+              }
+            })
+            .catch((error) => {
+              console.error(error);
+              //tell the player username does not exist
+              sendThis = {
+                eventName: "login_fail",
+                description: "Unexpected Error Occured.",
+              };
+
+              console.log(sendThis);
+            });
+        });
 
         break;
       case "authentication_queue":

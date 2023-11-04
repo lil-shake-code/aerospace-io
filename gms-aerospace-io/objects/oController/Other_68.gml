@@ -71,6 +71,15 @@ if(type == network_type_data){
 		
 		
 		
+		case "authenticated":
+			global.username = realData.username
+			show_message("You have "+string(realData.selenium)+" sel")
+		
+		break;
+		
+		
+		
+		
 		
 		case "create_player":
 		
