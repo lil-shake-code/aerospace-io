@@ -78,6 +78,7 @@ if(type == network_type_data){
 			global.username = realData.username
 			global.uuid = realData.uuid
 			global.savedSelenium = realData.selenium
+			global.skin = realData.skin
 			keyboard_string = global.username
 		
 		break;

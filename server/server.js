@@ -956,6 +956,7 @@ wss.on("connection", (ws) => {
             set(ref(db1, "users/" + uuid), {
               username: "user",
               selenium: 0,
+              skin: 0,
             });
           }
 
@@ -1261,6 +1262,36 @@ wss.on("connection", (ws) => {
       if (player.ws == ws) {
         //if health is 0, remove this player
         if (player.health <= 0) {
+          //get players uuid if it exists
+          var uuid = player.uuid;
+          //update users/uuid/selenium to += player.kills
+
+          if (uuid != null) {
+            const db = getDatabase();
+            //check if this location exists
+            var databaseRef = ref(db);
+            var userRef = child(databaseRef, "users/" + uuid);
+
+            // attach a listener to retrieve the user data
+
+            onValue(userRef, function (snapshot) {
+              var userData = snapshot.val();
+              console.log("snapshot is");
+              console.log(snapshot);
+
+              //if this is null, then the user does not exist
+              if (userData == null) {
+                console.log("user does not exist");
+              } else {
+                //if this user exists, then update the username
+                set(
+                  ref(db, "users/" + uuid + "/selenium"),
+                  userData.selenium + player.kills
+                );
+              }
+            });
+          }
+
           delete players[i];
 
           //tell other players to remove this player
