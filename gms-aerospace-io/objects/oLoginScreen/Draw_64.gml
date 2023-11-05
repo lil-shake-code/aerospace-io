@@ -61,9 +61,9 @@ if(mouse_check_button_pressed(mb_left)){
 draw_set_font(fMenu);
 draw_set_halign(fa_middle);
 draw_set_valign(fa_middle);
-draw_set_color(c_black);
+draw_set_color(c_fuchsia)
 draw_text_transformed(bw/2, bh/2-bh/10, keyboard_string,sc,sc,0);
-
+draw_set_color(c_black);
 if( string_length(keyboard_string)>13)
 	{
 		var c = string_delete(keyboard_string, 13, 1);
@@ -141,25 +141,36 @@ bh*0.55 + y2/2*sc*0.07,
 
 
 ///Google Log in
+if(global.uuid==""){
 
-draw_sprite_ext(signInGoogle,0,bw*0.8, bh*0.25 , sc*0.7,0.7*sc,0,c_white,1) //
-var x1 = 586
+	draw_sprite_ext(signInGoogle,0,bw*0.8, bh*0.3 , sc*0.7,0.7*sc,0,c_white,1) //
+	var x1 = 586
 
-var y1 = 138
-draw_rectangle(bw*0.8 - x1/2*sc*0.7 , 
-bh*0.25 - y1/2*sc*0.7,
-bw*0.8 + x1/2*sc*0.7 , 
-bh*0.25 + y1/2*sc*0.7,true)
-if(point_in_rectangle(mx,my,
-bw*0.8 - x1/2*sc*0.7 , 
-bh*0.25 - y1/2*sc*0.7,
-bw*0.8 + x1/2*sc*0.7 , 
-bh*0.25 + y1/2*sc*0.7,
-) and mouse_check_button_pressed(mb_left)){
+	var y1 = 138
+
+	if(point_in_rectangle(mx,my,
+	bw*0.8 - x1/2*sc*0.7 , 
+	bh*0.3 - y1/2*sc*0.7,
+	bw*0.8 + x1/2*sc*0.7 , 
+	bh*0.3 + y1/2*sc*0.7,
+	) and mouse_check_button_pressed(mb_left)){
 	
-	loginWithGoogle()
+		loginWithGoogle()
 
+
+	
+	}
+}else{
+	draw_text_transformed(bw*0.8, bh*0.3, "Logged in!",sc,sc,0);
 
 	
 }
 
+
+
+draw_text_transformed(bw*0.8, bh*0.2, "Selenium: "+ string(global.savedSelenium),sc,sc,0);
+
+draw_rectangle(bw*0.8 - bw*0.1 , 
+bh*0.25 - bh*0.15,
+bw*0.8 + bw*0.1 , 
+bh*0.25 + bh*0.1,true)

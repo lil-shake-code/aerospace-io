@@ -925,7 +925,7 @@ wss.on("connection", (ws) => {
   console.log("Client connected!");
 
   // Set up event listeners for handling messages from clients
-  ws.on("message", (message) => {
+  ws.on("message", async (message) => {
     // console.log(`Received message: ${message}`);
 
     var realData = JSON.parse(message);
@@ -946,7 +946,7 @@ wss.on("connection", (ws) => {
         var userRef = child(databaseRef, "users/" + uuid);
 
         // attach a listener to retrieve the user data
-        onValue(userRef, function (snapshot) {
+        onValue(userRef, async function (snapshot) {
           var userData = snapshot.val();
           console.log(userData);
           //if this is null, then the user does not exist
@@ -979,29 +979,32 @@ wss.on("connection", (ws) => {
           clientId++;
           console.log("some guy is trying to get authenticated");
 
-          var sendThis = {};
+          var sendThis = null;
           const dbRef = ref(getDatabase());
-          get(child(dbRef, `users/${uuid}`))
+          await get(child(dbRef, `users/${uuid}`))
             .then((snapshot) => {
               if (snapshot.exists()) {
                 //(snapshot.val());
-
                 console.log("This guy is a legit user!!");
 
                 //get the username and selenium
                 var serverUsername = snapshot.val().username;
+
                 var serverSelenium = snapshot.val().selenium;
 
                 //TODO edit this to the player dict
-
-                var sendThis = {
+                sendThis = {
                   eventName: "authenticated",
                   username: serverUsername,
                   selenium: serverSelenium,
+                  uuid: uuid,
                 };
 
-                //sending this to GMS CLient
+                console.log(sendThis);
+                //send this to the client
                 thisWS.send(JSON.stringify(sendThis));
+
+                //sending this to GMS CLient
               } else {
                 console.log("No data available");
                 //tell the player username does not exist
@@ -1055,7 +1058,42 @@ wss.on("connection", (ws) => {
           lastHitTime: 0,
           shootingCharacteristics: getShootingCharacteristics(0),
           recoil: 0,
+          uuid: realData.uuid,
         };
+        console.log("player sub uuid is ");
+        console.log(player.uuid);
+
+        //if uuid is empty string, set it to null
+        if (player.uuid == "") {
+          player.uuid = null;
+        } else {
+          console.log("player sub uuid is ");
+          console.log(player.uuid);
+          //update it on firebse under users/uuid/username
+          const db = getDatabase();
+          //check if this location exists
+          var databaseRef = ref(db);
+          var userRef = child(databaseRef, "users/" + player.uuid);
+
+          // attach a listener to retrieve the user data
+
+          onValue(userRef, function (snapshot) {
+            var userData = snapshot.val();
+            console.log("snapshot is");
+            console.log(snapshot);
+
+            //if this is null, then the user does not exist
+            if (userData == null) {
+              console.log("user does not exist");
+            } else {
+              //if this user exists, then update the username
+              set(
+                ref(db, "users/" + player.uuid + "/username"),
+                player.username
+              );
+            }
+          });
+        }
 
         players[player.clientId] = player;
 

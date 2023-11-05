@@ -40,7 +40,7 @@ if(!instance_exists(oPlayer) and room = Room_World){
 			ds_map_add(data,"eventName","create_me");
 			ds_map_add(data, "username", global.username)
 			ds_map_add(data, "skin", global.skin)
-			
+			ds_map_add(data, "uuid", global.uuid)
 			ds_map_add(data, "roomId", global.roomId)
 			buffer_write(Buffer, buffer_text, json_encode(data))
 			network_send_raw(oController.socket, Buffer, buffer_tell(Buffer),network_send_text)

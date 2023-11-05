@@ -1,4 +1,9 @@
 global.PRODUCTION = false
+if(!variable_global_exists("uuid")){
+	global.uuid = ""
+
+}
+global.savedSelenium = 0
 
 if(global.PRODUCTION){
 	socket = network_create_socket(network_socket_wss)

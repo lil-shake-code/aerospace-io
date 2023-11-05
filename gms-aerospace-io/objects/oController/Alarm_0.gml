@@ -14,4 +14,4 @@ network_send_raw(oController.socket, Buffer, buffer_tell(Buffer),network_send_te
 buffer_delete(Buffer)
 ds_map_destroy(data)
 
-alarm[0] = 10
+alarm[0] = 60

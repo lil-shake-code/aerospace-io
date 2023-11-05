@@ -23,7 +23,9 @@ if(type == network_type_non_blocking_connect){
 				ds_map_add(data,"eventName","create_me");
 				ds_map_add(data, "username", global.username)
 				ds_map_add(data, "skin", global.skin)
-			
+				
+					ds_map_add(data, "uuid", global.uuid)
+				
 				ds_map_add(data, "roomId", global.roomId)
 				buffer_write(Buffer, buffer_text, json_encode(data))
 				network_send_raw(oController.socket, Buffer, buffer_tell(Buffer),network_send_text)
@@ -50,8 +52,8 @@ if(type == network_type_data){
 	}
 	var eventName = variable_struct_get(realData,"eventName")
 	
-	
-	
+
+//	show_message(buffer_processed)
 	
 	switch(eventName){
 		case "created_you":
@@ -72,8 +74,11 @@ if(type == network_type_data){
 		
 		
 		case "authenticated":
+		
 			global.username = realData.username
-			show_message("You have "+string(realData.selenium)+" sel")
+			global.uuid = realData.uuid
+			global.savedSelenium = realData.selenium
+			keyboard_string = global.username
 		
 		break;
 		

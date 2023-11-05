@@ -12,3 +12,6 @@ skin_blue_gold
 
 global.roomId = "public"
 
+if (instance_exists(oParticleSystem)) {
+    seleniumEmitter = part_emitter_create(oParticleSystem.partSystem);
+}
