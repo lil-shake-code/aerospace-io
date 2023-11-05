@@ -925,7 +925,7 @@ wss.on("connection", (ws) => {
   console.log("Client connected!");
 
   // Set up event listeners for handling messages from clients
-  ws.on("message", async (message) => {
+  ws.on("message", (message) => {
     // console.log(`Received message: ${message}`);
 
     var realData = JSON.parse(message);
@@ -946,85 +946,91 @@ wss.on("connection", (ws) => {
         var userRef = child(databaseRef, "users/" + uuid);
 
         // attach a listener to retrieve the user data
-        onValue(userRef, async function (snapshot) {
-          var userData = snapshot.val();
-          console.log(userData);
-          //if this is null, then the user does not exist
-          if (userData == null) {
-            console.log("user does not exist");
+        onValue(
+          userRef,
+          async function (snapshot) {
+            var userData = snapshot.val();
+            console.log(userData);
+            //if this is null, then the user does not exist
+            if (userData == null) {
+              console.log("user does not exist");
 
-            set(ref(db1, "users/" + uuid), {
-              username: "user",
-              selenium: 0,
-              skin: 0,
-            });
-          }
-
-          //now do the login stuff under "authenticate_me"
-          //remove from queue first
-          var thisWS = null;
-          console.log("auth queue is");
-          console.log(authQueue);
-          for (let i in authQueue) {
-            if (authQueue[i].queueId == queueId) {
-              console.log("found the guy in the queue");
-              console.log(authQueue[i]);
-              thisWS = authQueue[i].ws;
-              authQueue.splice(i, 1);
+              set(ref(db1, "users/" + uuid), {
+                username: "user",
+                selenium: 0,
+                skin: 0,
+              });
             }
-          }
-          if (thisWS == null) {
-            return;
-          }
 
-          clientId++;
-          console.log("some guy is trying to get authenticated");
+            //now do the login stuff under "authenticate_me"
+            //remove from queue first
+            var thisWS = null;
+            // console.log("auth queue is");
+            // console.log(authQueue);
+            for (let i in authQueue) {
+              if (authQueue[i].queueId == queueId) {
+                console.log("found the guy in the queue");
+                console.log(authQueue[i]);
+                thisWS = authQueue[i].ws;
+                authQueue.splice(i, 1);
+              }
+            }
+            if (thisWS == null) {
+              return;
+            }
 
-          var sendThis = null;
-          const dbRef = ref(getDatabase());
-          await get(child(dbRef, `users/${uuid}`))
-            .then((snapshot) => {
-              if (snapshot.exists()) {
-                //(snapshot.val());
-                console.log("This guy is a legit user!!");
+            clientId++;
+            console.log("some guy is trying to get authenticated");
 
-                //get the username and selenium
-                var serverUsername = snapshot.val().username;
+            var sendThis = null;
+            const dbRef = ref(getDatabase());
+            get(child(dbRef, `users/${uuid}`))
+              .then((snapshot) => {
+                if (snapshot.exists()) {
+                  //(snapshot.val());
+                  console.log("This guy is a legit user!!");
 
-                var serverSelenium = snapshot.val().selenium;
+                  //get the username and selenium
+                  var serverUsername = snapshot.val().username;
 
-                var serverSkin = snapshot.val().skin;
+                  var serverSelenium = snapshot.val().selenium;
 
-                //TODO edit this to the player dict
+                  var serverSkin = snapshot.val().skin;
+
+                  //TODO edit this to the player dict
+                  sendThis = {
+                    eventName: "authenticated",
+                    username: serverUsername,
+                    selenium: serverSelenium,
+                    skin: serverSkin,
+                    uuid: uuid,
+                  };
+
+                  console.log(sendThis);
+                  //send this to the client
+                  thisWS.send(JSON.stringify(sendThis));
+
+                  //sending this to GMS CLient
+                } else {
+                  console.log("No data available");
+                  //tell the player username does not exist
+                }
+              })
+              .catch((error) => {
+                console.error(error);
+                //tell the player username does not exist
                 sendThis = {
-                  eventName: "authenticated",
-                  username: serverUsername,
-                  selenium: serverSelenium,
-                  skin: serverSkin,
-                  uuid: uuid,
+                  eventName: "login_fail",
+                  description: "Unexpected Error Occured.",
                 };
 
                 console.log(sendThis);
-                //send this to the client
-                thisWS.send(JSON.stringify(sendThis));
-
-                //sending this to GMS CLient
-              } else {
-                console.log("No data available");
-                //tell the player username does not exist
-              }
-            })
-            .catch((error) => {
-              console.error(error);
-              //tell the player username does not exist
-              sendThis = {
-                eventName: "login_fail",
-                description: "Unexpected Error Occured.",
-              };
-
-              console.log(sendThis);
-            });
-        });
+              });
+          },
+          {
+            onlyOnce: true,
+          }
+        );
 
         break;
       case "authentication_queue":
@@ -1079,22 +1085,24 @@ wss.on("connection", (ws) => {
           var databaseRef = ref(db);
           var userRef = child(databaseRef, "users/" + player.uuid);
 
-          // attach a listener to retrieve the user data
+          // get user data just once
 
-          onValue(userRef, function (snapshot) {
+          get(userRef).then((snapshot) => {
             var userData = snapshot.val();
-            console.log("snapshot is");
-            console.log(snapshot);
 
             //if this is null, then the user does not exist
             if (userData == null) {
               console.log("user does not exist");
             } else {
               //if this user exists, then update the username
-              set(
-                ref(db, "users/" + player.uuid + "/username"),
-                player.username
-              );
+              //if usernames are different, update it
+              if (userData.username != player.username) {
+                console.log("detected username change");
+                set(
+                  ref(db, "users/" + player.uuid + "/username"),
+                  player.username
+                );
+              }
             }
           });
         }
@@ -1256,20 +1264,31 @@ wss.on("connection", (ws) => {
   });
 
   //ws on close
-  ws.on("close", () => {
+  ws.on("close", async () => {
     //go to players and check if there is a player with this ws and remove it if health is 0
-
+    console.log("someone left");
     for (var i in players) {
       var player = players[i];
 
       if (player.ws == ws) {
+        console.log("found the player who left");
+
         //if health is 0, remove this player
         if (player.health <= 0) {
+          console.log("player health is 0, removing this player");
           //get players uuid if it exists
           var uuid = player.uuid;
+          var kills = player.kills;
+          var deadClientId = player.clientId;
+          console.log("player uuid was " + uuid);
+          console.log("player kills was " + kills);
+          console.log("player clientId was " + deadClientId);
+
+          delete players[i];
           //update users/uuid/selenium to += player.kills
 
           if (uuid != null) {
+            console.log("player is now being scanned on firebase");
             const db = getDatabase();
             //check if this location exists
             var databaseRef = ref(db);
@@ -1277,30 +1296,40 @@ wss.on("connection", (ws) => {
 
             // attach a listener to retrieve the user data
 
-            onValue(userRef, function (snapshot) {
-              var userData = snapshot.val();
-              console.log("snapshot is");
-              console.log(snapshot);
+            await get(userRef)
+              .then((snapshot) => {
+                var userData = snapshot.val();
 
-              //if this is null, then the user does not exist
-              if (userData == null) {
-                console.log("user does not exist");
-              } else {
-                //if this user exists, then update the username
-                set(
-                  ref(db, "users/" + uuid + "/selenium"),
-                  userData.selenium + player.kills
-                );
-              }
-            });
+                //if this is null, then the user does not exist
+                if (userData == null) {
+                  console.log("user does not exist");
+                } else {
+                  //if this user exists, then update the selenium
+                  console.log(
+                    "user is dead and found in RTDB so I am adding selenium"
+                  );
+                  set(
+                    ref(db, "users/" + uuid + "/selenium"),
+                    userData.selenium + kills
+                  );
+                }
+              })
+              .catch((error) => {
+                console.error(error);
+                //tell the player username does not exist
+                sendThis = {
+                  eventName: "login_fail",
+                  description: "Unexpected Error Occured.",
+                };
+
+                console.log(sendThis);
+              });
           }
-
-          delete players[i];
 
           //tell other players to remove this player
           var sendThis = {
             eventName: "destroy_player",
-            clientId: player.clientId,
+            clientId: deadClientId,
           };
 
           for (var j in players) {
@@ -1311,6 +1340,7 @@ wss.on("connection", (ws) => {
             }
           }
         }
+        break;
       }
     }
   });
