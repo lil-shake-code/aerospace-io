@@ -993,11 +993,14 @@ wss.on("connection", (ws) => {
 
                 var serverSelenium = snapshot.val().selenium;
 
+                var serverSkin = snapshot.val().skin;
+
                 //TODO edit this to the player dict
                 sendThis = {
                   eventName: "authenticated",
                   username: serverUsername,
                   selenium: serverSelenium,
+                  skin: serverSkin,
                   uuid: uuid,
                 };
 
