@@ -174,3 +174,10 @@ draw_rectangle(bw*0.8 - bw*0.1 ,
 bh*0.25 - bh*0.15,
 bw*0.8 + bw*0.1 , 
 bh*0.25 + bh*0.1,true)
+
+
+draw_text_transformed(bw*0.9, bh*0.9, "IOGames.Space",sc,sc,0);
+if(mouse_check_button_pressed(mb_left) and point_distance(bw*0.9,bh*0.9,mx,my)< bw*0.05){
+	url_open_ext("https://iogames.space", "_blank");
+}
+

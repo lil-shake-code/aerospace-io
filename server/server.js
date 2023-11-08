@@ -449,6 +449,8 @@ function gameLoop() {
 
         ///add to kills
         player.kills += selenium.value / 10;
+        ///also add to usable selenium
+        player.usableSelenium += selenium.value / 10;
 
         //tell players to delete this selenium
         var sendThis = {
@@ -493,7 +495,7 @@ function gameLoop() {
     //health regeneration
     if (player.health < player.maxHealth && player.health > 0) {
       if (Date.now() - player.lastHitTime > 10000) {
-        player.health += 0.2;
+        player.health += player.healthRegenRate;
       }
     }
 
@@ -752,6 +754,7 @@ function gameLoop() {
             //find the player who fired the bullet and add 1 to kills
             try {
               players[bullet.firedBy].kills += 1;
+              players[bullet.firedBy].usableSelenium += 1;
 
               //shooting characteristics
 
@@ -819,6 +822,8 @@ function createBots() {
       skin: Math.floor(Math.random() * 7), //0-6
       lastHitTime: 0,
       recoil: 0,
+      healthRegenRate: 0.2,
+      usableSelenium: 0,
     };
     player.shootingCharacteristics = getShootingCharacteristics(player.kills);
 
@@ -1069,6 +1074,8 @@ wss.on("connection", (ws) => {
           shootingCharacteristics: getShootingCharacteristics(0),
           recoil: 0,
           uuid: realData.uuid,
+          healthRegenRate: 0.2,
+          usableSelenium: 0,
         };
         console.log("player sub uuid is ");
         console.log(player.uuid);
