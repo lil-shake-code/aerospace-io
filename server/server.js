@@ -293,7 +293,7 @@ function checkBulletCollision(bullet, player) {
   return false;
 }
 function getShootingCharacteristics(level) {
-  var level = Math.floor(level);
+  var level = Math.floor(level * 100) / 100;
 
   //Calculate player max health
   let maxHealth = 100 + level * 10;
