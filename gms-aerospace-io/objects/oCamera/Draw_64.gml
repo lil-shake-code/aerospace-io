@@ -184,6 +184,111 @@ if( room = Room_World){
 		}
 		
 		
+		///alerts
+		
+		if(array_length(alerts)>1){
+			array_delete(alerts,0,1)
+		}
+		
+		if(array_length(alerts)==1){
+			alerts[array_length(alerts)-1][1]--;
+			
+			draw_set_color(c_white)
+			var half_width =bw*0.006* string_length(alerts[array_length(alerts)-1][0])
+			draw_roundrect(bw*0.5-half_width,bh*0.23,bw*0.5+half_width,bh*0.27,false)
+			
+			draw_set_color(c_black)
+			draw_text_transformed(bw*0.5,bh*0.25,alerts[array_length(alerts)-1][0],
+			sc*0.2,sc*0.2,0
+			)
+			
+			
+			if(alerts[array_length(alerts)-1][1]<0){
+				array_pop(alerts)
+			}
+			
+		}
+		
+
+		
+///top right characteristics
+
+// Define stats to display with their max values
+var stats = ds_map_create();
+ds_map_add(stats, "tS", ["Thrust Speed", 8]);
+ds_map_add(stats, "mH", ["Max Health", 200]);
+ds_map_add(stats, "hR", ["Health Regen", 1]);
+ds_map_add(stats, "D", ["Damage", 50]);
+ds_map_add(stats, "rT", ["Recoil Time", 5]);
+ds_map_add(stats, "sp", ["Spread", 5]);
+ds_map_add(stats, "bS", ["Bullet Speed", 20]);
+
+// Set colors
+draw_set_color(c_black);
+draw_roundrect(bw*0.8, bh*0.01, bw*0.95, bh*0.3, false);
+
+// Set text properties
+draw_set_color(c_white);
+draw_set_halign(fa_left);
+
+// Variables for positioning and scaling
+var startX = bw * 0.81;
+var startY = bh * 0.02;
+var stepY = (bh * 0.3 - bh * 0.01) / ds_map_size(stats); // Divide available space by number of stats
+var scaleX = sc * 0.15;
+var scaleY = sc * 0.15;
+
+// Loop through the stats and draw them
+var i = 0;
+var key, statInfo, statName, statMaxValue;
+
+// Loop through the stats and draw them
+var key = ds_map_find_first(stats);
+var value, statName, statMaxValue, i = 0;
+var barHeight = sc *7; // Bar height as a factor of sc
+
+while (!is_undefined(key)) {
+    value = stats[? key];
+    statName = value[0];
+    statMaxValue = value[1];
+
+    // Calculate the Y-position for text and bar
+    var textY = startY + stepY * i;
+    var barY = textY + stepY / 2; // Center of the bar between two texts
+
+    // Draw stat name
+    draw_text_transformed(startX, textY, statName, scaleX, scaleY, 0);
+
+    // Draw healthbar for stat, centered between text
+    draw_healthbar(
+        startX, 
+        barY - barHeight / 2, // Top Y-coordinate of the bar
+        bw*0.95, 
+        barY + barHeight / 2, // Bottom Y-coordinate of the bar
+        struct_get(global.upgrades,key) / statMaxValue * 100, 
+        c_grey, 
+        c_white, 
+        c_white, 
+        false, 
+        true, 
+        true
+    );
+
+    key = ds_map_find_next(stats, key);
+    i++;
+}
+
+
+
+
+// Clean up
+ds_map_destroy(stats);
+
+
+		
+		
+		
+		
 		
 		
 	}

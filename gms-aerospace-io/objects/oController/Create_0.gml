@@ -26,3 +26,16 @@ alarm[0] = 10
 audio_falloff_set_model(audio_falloff_exponent_distance);
 audio_listener_position(x,y,0)
 audio_listener_orientation(0, -1, 0, 0, 1, 0);
+
+
+global.upgrades = {
+	tS: 0,
+	mH: 100,
+	hR: 0.2,
+	D: 10,
+	rT: 10,
+	sp: 1,
+	bS: 1,
+	uS:0,
+
+}

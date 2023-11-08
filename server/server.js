@@ -410,6 +410,17 @@ function maxBotsSinusoidalValue() {
   ///console.log(MAX_BOTS);
 }
 
+function sendAlertToClient(clientId, alertMessage) {
+  var sendThis = {
+    eventName: "alert",
+    message: alertMessage,
+  };
+
+  if (players[clientId].ws) {
+    players[clientId].ws.send(JSON.stringify(sendThis));
+  }
+}
+
 //console.log(sinusoidalValue()); // This will give a value between 1 and 5, oscillating every 5 minutes
 
 //Game Loop
@@ -451,6 +462,10 @@ function gameLoop() {
         player.kills += selenium.value / 10;
         ///also add to usable selenium
         player.usableSelenium += selenium.value / 10;
+
+        players[j].shootingCharacteristics = getShootingCharacteristics(
+          player.kills
+        );
 
         //tell players to delete this selenium
         var sendThis = {
@@ -755,6 +770,14 @@ function gameLoop() {
             try {
               players[bullet.firedBy].kills += 1;
               players[bullet.firedBy].usableSelenium += 1;
+              var victimName = player.username;
+              if (victimName == "") {
+                victimName = "a player";
+              }
+              sendAlertToClient(
+                bullet.firedBy,
+                "You killed : " + victimName + "!"
+              );
 
               //shooting characteristics
 
@@ -895,6 +918,35 @@ function globalStateUpdate() {
   }
 }
 setInterval(globalStateUpdate, 1000 / 60);
+
+//light global state update
+function lightSelfStateUpdate() {
+  //this is to tell every player about their own possible upgrades
+  for (var i in players) {
+    var player = players[i];
+
+    if (player.health <= 0) {
+      continue;
+    }
+    var sendThis = {
+      eventName: "light_self_state_update",
+      clientId: player.clientId,
+      tS: player.shootingCharacteristics.thrustSpeed, //thrust speed
+      mH: player.shootingCharacteristics.maxHealth, //max health
+      hR: player.healthRegenRate, //health regen rate
+      D: player.shootingCharacteristics.damage, //damage
+      rT: player.shootingCharacteristics.recoilTime, //recoil time
+      sp: player.shootingCharacteristics.spread, //spread
+      bS: player.shootingCharacteristics.bulletSpeed, //bullet speed
+      uS: player.usableSelenium, //usable selenium
+    };
+
+    if (player.ws) {
+      player.ws.send(JSON.stringify(sendThis));
+    }
+  }
+}
+setInterval(lightSelfStateUpdate, 1000 / 10); //10FPS
 
 //Bullet state update
 function bulletStateUpdate() {

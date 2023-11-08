@@ -156,6 +156,22 @@ if(type == network_type_data){
 		
 		
 		
+		case "light_self_state_update":
+			global.upgrades = realData
+		break;
+		
+		
+		
+		
+		case "alert":
+			if(instance_exists(oCamera)){
+				array_push(oCamera.alerts,
+				[realData.message  ,100]
+				)
+			}	
+		break;
+		
+		
 		case "bullet_state_update":
 		
 		
@@ -234,6 +250,8 @@ audio_sound_gain(sound_id, volume, 0); // Immediately set the volume based on th
 		//show_message(buffer_processed)
 		if(global.clientId == realData.clientId){
 			instance_destroy(oPlayer)
+			
+			oCamera.alerts = []
 			
 			//find your killers name...
 			oCamera.myKiller = realData.killerName
