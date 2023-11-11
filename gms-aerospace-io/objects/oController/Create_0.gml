@@ -33,7 +33,7 @@ global.upgrades = {
 	mH: 100,
 	hR: 0.2,
 	D: 10,
-	rT: 10,
+	rT: 0,
 	sp: 1,
 	bS: 1,
 	uS:0,

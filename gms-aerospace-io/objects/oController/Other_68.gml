@@ -165,6 +165,7 @@ if(type == network_type_data){
 		
 		case "alert":
 			if(instance_exists(oCamera)){
+				var soundUp = audio_play_sound(soundUpgrade,1,false)
 				array_push(oCamera.alerts,
 				[realData.message  ,100]
 				)

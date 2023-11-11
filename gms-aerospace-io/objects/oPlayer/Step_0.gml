@@ -58,6 +58,52 @@ if(mouse_check_button(mb_left)){
 
 
 
+//UPGRADES
+var p1 = keyboard_check_pressed(ord("1"));
+var p2 = keyboard_check_pressed(ord("2"));
+var p3 = keyboard_check_pressed(ord("3"));
+var p4 = keyboard_check_pressed(ord("4"));
+var p5 = keyboard_check_pressed(ord("5"));
+var p6 = keyboard_check_pressed(ord("6"));
+var p7 = keyboard_check_pressed(ord("7"));
+
+
+if(p1 or p2 or p3 or p4 or p5 or p6 or p7){
+	
+
+	
+	var upgradeIndex = 0;
+	if(p1) upgradeIndex = 1;
+	if(p2) upgradeIndex = 2;
+	if(p3) upgradeIndex = 3;
+	if(p4) upgradeIndex = 4;
+	if(p5) upgradeIndex = 5;
+	if(p6) upgradeIndex = 6;
+	if(p7) upgradeIndex = 7;
+	
+	
+	
+	var Buffer = buffer_create(1, buffer_grow, 1)
+	//WHAT DATA 
+	var data = ds_map_create();
+	//whatever data you want to send as key value pairs
+
+	ds_map_add(data,"eventName","upgrade");
+	ds_map_add(data, "clientId", global.clientId)
+	ds_map_add(data, "upgradeIndex", upgradeIndex)
+	
+
+	
+	buffer_write(Buffer, buffer_text, json_encode(data))
+	network_send_raw(oController.socket, Buffer, buffer_tell(Buffer),network_send_text)
+	buffer_delete(Buffer)
+	ds_map_destroy(data)
+	
+}
+
+
+
+
 maxSpeed = max(speed, maxSpeed)
 maxTailLength = image_xscale
 // Assuming 'speed' is the current speed of the player and 'direction' is the facing direction

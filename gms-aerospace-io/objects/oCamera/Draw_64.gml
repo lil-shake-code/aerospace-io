@@ -67,6 +67,8 @@ if( room = Room_World){
 	draw_set_halign(fa_left);
 	draw_text_transformed(0,bh*0.15," Score : "+string(score),0.3*sc,0.3*sc,0);
 	
+	draw_text_transformed(0,bh*0.2,"  Selenium : "+string(global.upgrades.uS),0.2*sc,0.2*sc,0);
+	
 	
 	
 	draw_set_color(c_yellow);
@@ -257,7 +259,7 @@ while (!is_undefined(key)) {
     var barY = textY + stepY / 2; // Center of the bar between two texts
 
     // Draw stat name
-    draw_text_transformed(startX, textY, statName, scaleX, scaleY, 0);
+    draw_text_transformed(startX, textY, string(i+1)+". "+statName, scaleX, scaleY, 0);
 
     // Draw healthbar for stat, centered between text
     draw_healthbar(
@@ -276,6 +278,15 @@ while (!is_undefined(key)) {
 
     key = ds_map_find_next(stats, key);
     i++;
+}
+
+if(global.upgrades.uS>1){
+	// Draw stat name
+	var textY = startY + stepY * i;
+    var barY = textY + stepY / 2; // Center of the bar between two texts
+	draw_set_alpha(abs(sin(current_time*0.005)))
+    draw_text_transformed(startX, textY, "Press Numbers to Upgrade!", scaleX, scaleY, 0);
+	draw_set_alpha(1)
 }
 
 

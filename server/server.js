@@ -292,34 +292,36 @@ function checkBulletCollision(bullet, player) {
   }
   return false;
 }
-function getShootingCharacteristics(level) {
+function getShootingCharacteristics(level, upgrades) {
   var level = Math.floor(level * 100) / 100;
 
   //Calculate player max health
-  let maxHealth = 100 + level * 10;
+  let maxHealth = 100 + level * 10 + upgrades[1] * 4;
 
   // Calculate damage
-  let damage = Math.min(3 + level / 2, 40);
+  let damage = Math.min(3 + level / 2 + 2 * upgrades[3], 40);
 
   // Calculate bullet speed
 
-  let bulletSpeed = Math.max(15 - level * 2, 4);
+  let bulletSpeed = Math.max(15 - level * 2 + 3 * upgrades[6], 4);
   if (level == 0) {
     bulletSpeed = 15;
   }
 
   // Calculate recoil time
-  let recoilTime = Math.min(8 * level, 20);
-
-  if (level == 0) {
+  let recoilTime = Math.max(Math.min(8 * level - 2 * upgrades[4], 20), 2);
+  //if level betveen 0 and 1, recoil time is 8
+  if (level < 1) {
     recoilTime = 8;
   }
 
   // Calculate spread - the number of bullets fired in 1 trigger
   let spread = Math.min(1 + Math.floor(level / 3), 5);
+  +upgrades[5] / 3;
 
-  let thrustSpeed = Math.max(8 - level, 2);
+  let thrustSpeed = Math.max(8 - level + 2 * upgrades[0], 2);
 
+  let healthRegenRate = 0.2 + upgrades[2] * 0.05;
   return {
     damage: damage,
     bulletSpeed: bulletSpeed,
@@ -327,6 +329,7 @@ function getShootingCharacteristics(level) {
     spread: spread,
     thrustSpeed: thrustSpeed,
     maxHealth: maxHealth,
+    healthRegenRate: healthRegenRate,
   };
 }
 
@@ -464,7 +467,8 @@ function gameLoop() {
         player.usableSelenium += selenium.value / 10;
 
         players[j].shootingCharacteristics = getShootingCharacteristics(
-          player.kills
+          player.kills,
+          player.upgrades
         );
 
         //tell players to delete this selenium
@@ -782,7 +786,10 @@ function gameLoop() {
               //shooting characteristics
 
               players[bullet.firedBy].shootingCharacteristics =
-                getShootingCharacteristics(players[bullet.firedBy].kills);
+                getShootingCharacteristics(
+                  players[bullet.firedBy].kills,
+                  players[bullet.firedBy].upgrades
+                );
             } catch (e) {
               console.log(
                 "Error in adding a kill to player, most likely the player is dead"
@@ -847,12 +854,17 @@ function createBots() {
       recoil: 0,
       healthRegenRate: 0.2,
       usableSelenium: 0,
+      upgrades: [0, 0, 0, 0, 0, 0, 0],
     };
-    player.shootingCharacteristics = getShootingCharacteristics(player.kills);
+    player.shootingCharacteristics = getShootingCharacteristics(
+      player.kills,
+
+      player.upgrades
+    );
 
     player.speed = player.shootingCharacteristics.thrustSpeed;
     player.maxHealth = player.shootingCharacteristics.maxHealth;
-
+    player.healthRegenRate = player.shootingCharacteristics.healthRegenRate;
     players[player.clientId] = player;
 
     //tell other players we created this guy
@@ -1123,11 +1135,15 @@ wss.on("connection", (ws) => {
           bot: null,
           skin: realData.skin,
           lastHitTime: 0,
-          shootingCharacteristics: getShootingCharacteristics(0),
+          shootingCharacteristics: getShootingCharacteristics(
+            0,
+            [0, 0, 0, 0, 0, 0, 0]
+          ),
           recoil: 0,
           uuid: realData.uuid,
           healthRegenRate: 0.2,
           usableSelenium: 0,
+          upgrades: [0, 0, 0, 0, 0, 0, 0],
         };
         console.log("player sub uuid is ");
         console.log(player.uuid);
@@ -1170,7 +1186,7 @@ wss.on("connection", (ws) => {
 
         player.speed = player.shootingCharacteristics.thrustSpeed;
         player.maxHealth = player.shootingCharacteristics.maxHealth;
-
+        player.healthRegenRate = player.shootingCharacteristics.healthRegenRate;
         //tell the player we created you
         ws.send(
           JSON.stringify({
@@ -1311,6 +1327,95 @@ wss.on("connection", (ws) => {
         }
         break;
 
+      case "upgrade":
+        console.log(realData);
+        var upgradeIndex = realData.upgradeIndex;
+        var player = players[realData.clientId];
+        if (player) {
+          //if player health
+          if (player.health <= 0) {
+            break;
+          }
+
+          //if player has enough selenium
+          if (player.usableSelenium < 1) {
+            console.log("player does not have enough selenium");
+
+            var sendThis = {
+              eventName: "alert",
+              message: "You do not have enough selenium!",
+            };
+
+            if (player.ws) {
+              player.ws.send(JSON.stringify(sendThis));
+            }
+            break;
+          }
+
+          //upgrade Index is a 1 1 mapping to the upgrades array
+          //upgradeIndex 0 is thrust speed
+          //upgradeIndex 1 is max health
+          //upgradeIndex 2 is health regen rate
+          //upgradeIndex 3 is damage
+          //upgradeIndex 4 is recoil time
+          //upgradeIndex 5 is spread
+          //upgradeIndex 6 is bullet speed
+
+          var upgradedStat = "";
+          switch (upgradeIndex - 1) {
+            case 0:
+              upgradedStat = "Thrust Speed";
+              break;
+            case 1:
+              upgradedStat = "Max Health";
+              break;
+            case 2:
+              upgradedStat = "Health Regen Rate";
+              break;
+            case 3:
+              upgradedStat = "Damage";
+              break;
+            case 4:
+              upgradedStat = "Recoil Time";
+              break;
+            case 5:
+              upgradedStat = "Spread";
+              break;
+            case 6:
+              upgradedStat = "Bullet Speed";
+              break;
+          }
+
+          //reduce usable selenium by 1
+
+          //increase this upgrade by 1
+          try {
+            player.usableSelenium -= 1;
+            console.log("old upgrade array was");
+            console.log(player.upgrades);
+            player.upgrades[upgradeIndex - 1] += 1;
+            console.log("new upgrade array is");
+            console.log(player.upgrades);
+            //update shooting characteristics
+            player.shootingCharacteristics = getShootingCharacteristics(
+              player.kills,
+              player.upgrades
+            );
+
+            var sendThis = {
+              eventName: "alert",
+              message: "Upgraded " + upgradedStat + "!",
+            };
+
+            if (player.ws) {
+              player.ws.send(JSON.stringify(sendThis));
+            }
+          } catch (e) {
+            console.log("upgrade index is invalid");
+            break;
+          }
+        }
+        break;
       case "ping":
         ws.send(
           JSON.stringify({

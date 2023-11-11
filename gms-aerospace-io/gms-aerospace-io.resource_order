@@ -26,6 +26,7 @@
     {"name":"skin_cherry","order":2,"path":"sprites/skin_cherry/skin_cherry.yy",},
     {"name":"sQuinjet","order":5,"path":"sprites/sQuinjet/sQuinjet.yy",},
     {"name":"font_usernames","order":3,"path":"fonts/font_usernames/font_usernames.yy",},
+    {"name":"soundUpgrade","order":3,"path":"sounds/soundUpgrade/soundUpgrade.yy",},
     {"name":"oSelenium","order":10,"path":"objects/oSelenium/oSelenium.yy",},
     {"name":"sBullet","order":2,"path":"sprites/sBullet/sBullet.yy",},
     {"name":"signInGoogle","order":11,"path":"sprites/signInGoogle/signInGoogle.yy",},
