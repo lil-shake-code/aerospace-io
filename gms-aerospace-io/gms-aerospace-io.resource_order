@@ -39,6 +39,7 @@
     {"name":"Room_World","order":2,"path":"rooms/Room_World/Room_World.yy",},
     {"name":"sRandomStarsBackground","order":6,"path":"sprites/sRandomStarsBackground/sRandomStarsBackground.yy",},
     {"name":"oController","order":7,"path":"objects/oController/oController.yy",},
+    {"name":"gameart","order":12,"path":"sprites/gameart/gameart.yy",},
     {"name":"skin_blue_gold","order":1,"path":"sprites/skin_blue_gold/skin_blue_gold.yy",},
     {"name":"skin_psychedelic","order":6,"path":"sprites/skin_psychedelic/skin_psychedelic.yy",},
     {"name":"oLoginScreen","order":1,"path":"objects/oLoginScreen/oLoginScreen.yy",},

@@ -1,4 +1,4 @@
-global.PRODUCTION = false
+global.PRODUCTION = true
 if(!variable_global_exists("uuid")){
 	global.uuid = ""
 

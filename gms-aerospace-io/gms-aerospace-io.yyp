@@ -60,6 +60,7 @@
     {"id":{"name":"sRandomStarsBackground","path":"sprites/sRandomStarsBackground/sRandomStarsBackground.yy",},},
     {"id":{"name":"oController","path":"objects/oController/oController.yy",},},
     {"id":{"name":"skin_basic","path":"sprites/skin_basic/skin_basic.yy",},},
+    {"id":{"name":"gameart","path":"sprites/gameart/gameart.yy",},},
     {"id":{"name":"skin_blue_gold","path":"sprites/skin_blue_gold/skin_blue_gold.yy",},},
     {"id":{"name":"skin_psychedelic","path":"sprites/skin_psychedelic/skin_psychedelic.yy",},},
     {"id":{"name":"oLoginScreen","path":"objects/oLoginScreen/oLoginScreen.yy",},},

@@ -114,21 +114,19 @@ bh*0.55 + y1/2*sc*0.7,
 ///Twitter Plug
 ///IOGAMES.FORUM PLUG
 draw_set_color(c_white)
-draw_text_transformed(bw*0.2, bh*0.3, "Latest Tweets",sc,sc,0);
+draw_text_transformed(bw*0.1, bh*0.9, "Latest Tweets",sc,sc,0);
 
-draw_sprite_ext(sSampleTweeet,0,bw*0.2, bh*0.55 , sc*0.07,0.07*sc,0,c_white,1) //
-var x2 = 8860
+//draw_sprite_ext(sSampleTweeet,0,bw*0.2, bh*0.55 , sc*0.07,0.07*sc,0,c_white,1) //
 
-var y2 = 8470
-draw_rectangle(bw*0.2 - x2/2*sc*0.07 , 
-bh*0.55 - y2/2*sc*0.07,
-bw*0.2 + x2/2*sc*0.07 , 
-bh*0.55 + y2/2*sc*0.07,true)
+draw_rectangle(bw*0.03 , 
+bh*0.88 ,
+bw*0.17  , 
+bh*0.92 ,true)
 if(point_in_rectangle(mx,my,
-bw*0.2 - x2/2*sc*0.07 , 
-bh*0.55 - y2/2*sc*0.07,
-bw*0.2 + x2/2*sc*0.07 , 
-bh*0.55 + y2/2*sc*0.07,
+bw*0.03 , 
+bh*0.88 ,
+bw*0.17  , 
+bh*0.92 ,
 ) and mouse_check_button_pressed(mb_left)){
 	
 	url_open_ext("https://twitter.com/lilshake139", "_blank");
@@ -138,7 +136,7 @@ bh*0.55 + y2/2*sc*0.07,
 }
 
 
-
+/*
 
 ///Google Log in
 if(global.uuid==""){
@@ -174,6 +172,7 @@ draw_rectangle(bw*0.8 - bw*0.1 ,
 bh*0.25 - bh*0.15,
 bw*0.8 + bw*0.1 , 
 bh*0.25 + bh*0.1,true)
+*/
 
 
 draw_text_transformed(bw*0.9, bh*0.9, "IOGames.Space",sc,sc,0);

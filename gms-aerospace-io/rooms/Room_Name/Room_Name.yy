@@ -24,7 +24,7 @@
         {"name":"g_RecursiveBlurRadius","type":0,"value":"64",},
         {"name":"g_RecursiveBlurQuality","type":0,"value":"5",},
         {"name":"g_RecursiveBlurGamma","type":0,"value":"0",},
-      ],"spriteId":{"name":"sSky","path":"sprites/sSky/sSky.yy",},"stretch":false,"userdefinedAnimFPS":false,"userdefinedDepth":false,"visible":true,"vspeed":5.0,"vtiled":true,"x":-900,"y":0,},
+      ],"spriteId":{"name":"gameart","path":"sprites/gameart/gameart.yy",},"stretch":false,"userdefinedAnimFPS":false,"userdefinedDepth":false,"visible":true,"vspeed":5.0,"vtiled":true,"x":-900,"y":0,},
     {"resourceType":"GMRBackgroundLayer","resourceVersion":"1.0","name":"Background","animationFPS":15.0,"animationSpeedType":0,"colour":4278190080,"depth":200,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":true,"hspeed":0.0,"htiled":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"properties":[],"spriteId":null,"stretch":false,"userdefinedAnimFPS":false,"userdefinedDepth":false,"visible":true,"vspeed":0.0,"vtiled":false,"x":0,"y":0,},
   ],
   "parent": {
